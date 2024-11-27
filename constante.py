@@ -4,4 +4,4 @@ COULEUR_GRILLE = (0, 0, 0)
 COULEUR_DEPLACEMENT = (0, 255, 0)
 
 
-Atk_chevalier = 10
+Atk_chevalier = 20

@@ -6,3 +6,4 @@ COULEUR_DEPLACEMENT = (0, 255, 0)
 
 Atk_chevalier = 30
 vit_chevalier = 10
+def_chevalier = 20 

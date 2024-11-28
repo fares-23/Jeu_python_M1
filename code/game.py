@@ -11,11 +11,14 @@ import sys
 # Initialisation de Pygame
 pygame.init()
 
-# Définition de la taille de la fenêtre
-fenetre = pygame.display.set_mode((TAILLE_GRILLE * TAILLE_CASE, TAILLE_GRILLE * TAILLE_CASE))
+fenetre = pygame.display.set_mode((900, 600))
 
-# Création de la grille, du personnage et de l'ennemi
-grille = Grille(TAILLE_GRILLE,fenetre)
+# Calcul de la taille de la grille
+taille_x = 1280 // TAILLE_CASE
+taille_y = 720 // TAILLE_CASE
+
+# Création de la grille, du personnage
+grille = Grille(taille_x, taille_y, 0, 0)  # La grille est positionnée à 0, 0
 
 arche = Archer(3 * TAILLE_CASE, 3 * TAILLE_CASE,(150, 0, 0)) # L'archer est positionné en (3, 3) de couleur rouge
 mage = Mage(7 * TAILLE_CASE, 7 * TAILLE_CASE,(0, 150, 0)) # Le mage est positionné en (3, 3) de couleur verte
@@ -37,7 +40,7 @@ while True:
 
     # Affichage de la grille
     fenetre.fill((255, 255, 255))
-    grille.afficher()
+    grille.afficher(fenetre)
     
     for personnage in liste_personnage:
         personnage.afficher_deplacement(grille.cases,fenetre,coordonnee)

@@ -11,11 +11,11 @@ import sys
 # Initialisation de Pygame
 pygame.init()
 
-fenetre = pygame.display.set_mode((900, 600))
+fenetre = pygame.display.set_mode(RESOLUTION)
 
 # Calcul de la taille de la grille
-taille_x = 1280 // TAILLE_CASE
-taille_y = 720 // TAILLE_CASE
+taille_x = RESOLUTION[0] // TAILLE_CASE
+taille_y = RESOLUTION[1] // TAILLE_CASE
 
 # Création de la grille, du personnage
 grille = Grille(taille_x, taille_y, 0, 0)  # La grille est positionnée à 0, 0
@@ -39,7 +39,7 @@ while True:
             
 
     # Affichage de la grille
-    fenetre.fill((255, 255, 255))
+    fenetre.fill(COULEUR_FOND)
     grille.afficher(fenetre)
     
     for personnage in liste_personnage:

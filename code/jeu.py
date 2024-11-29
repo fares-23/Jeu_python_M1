@@ -20,8 +20,8 @@ class Jeu:
         self.chevalier = Chevalier(5 * TAILLE_CASE, 5 * TAILLE_CASE, (0, 0, 150))
         self.liste_personnage = [self.arche, self.mage, self.chevalier]
 
-    def afficher(self, fenetre):
-        self.grille.afficher(fenetre)
+    def afficher(self, fenetre, tmx_data):
+        self.grille.afficher(fenetre,tmx_data)
         for personnage in self.liste_personnage:
             personnage.afficher_deplacement(self.grille.cases, fenetre, [self.arche.get_coordonnees(), self.mage.get_coordonnees(), self.chevalier.get_coordonnees()])
             personnage.afficher_personnage(fenetre)

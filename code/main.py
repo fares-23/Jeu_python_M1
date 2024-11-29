@@ -19,7 +19,7 @@ class Main:
 
         # Charger la carte TMX
         try:
-            self.tmx_data = load_pygame("C:/Users/melaa/Desktop/Jeu_python_M1/map.tmx")
+            self.tmx_data = load_pygame("map.tmx")
             print("Carte TMX chargée avec succès")
         except Exception as e:
             print(f"Erreur lors du chargement de la carte : {e}")
@@ -63,7 +63,7 @@ class Main:
             elif self.etat == "selection":
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
-                self.jeu.afficher(self.fenetre)
+                self.jeu.afficher(self.fenetre,self.tmx_data)
 
             # Mettre à jour l'affichage à chaque itération
             pygame.display.flip()

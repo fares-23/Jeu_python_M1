@@ -27,7 +27,7 @@ class Main:
             sys.exit()
 
         # Créer une instance de Grille pour gérer les cases
-        self.grille = Grille(taille_x=40, taille_y=24, x=0, y=0)
+        self.grille = Grille(taille_x=120, taille_y=120, x=0, y=0)
         
         # Initialisation des autres composants du jeu (Menu, Sélection, Jeu)
         self.menu = Menu(self.fenetre)

@@ -18,7 +18,7 @@ class Menu:
         for bouton in self.boutons:
             if bouton.x < event.pos[0] < bouton.x + bouton.width and bouton.y < event.pos[1] < bouton.y + bouton.height:
                 if bouton.text == "Start":
-                    return "jeu"
+                    return "selection"
                 elif bouton.text == "Quit":
                     pygame.quit()
                     sys.exit()

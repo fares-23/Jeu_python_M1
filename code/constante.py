@@ -1,10 +1,12 @@
-TAILLE_GRILLE = 60
-TAILLE_CASE = 30
+TAILLE_GRILLE = 48*40
+TAILLE_CASE = 16
+ 
+RESOLUTION = (48 * TAILLE_CASE+100 , 40 * TAILLE_CASE + 100 )  # Ajustez la taille de la fenêtre
+
 COULEUR_GRILLE = (0, 0, 0)
 COULEUR_DEPLACEMENT = (0, 255, 0)
 COULEUR_FOND = (255, 255, 255)  # Définition de la couleur de fond
-RESOLUTION = (1200, 720)
-
+ 
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 

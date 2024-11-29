@@ -33,6 +33,8 @@ class Main:
         self.menu = Menu(self.fenetre)
         self.selection = Selection(self.fenetre)
         self.jeu = Jeu()
+        self.fond = pygame.image.load("assets/interface/main_menu_background.jpg")  # Remplacez par le chemin vers votre image
+        self.fond = pygame.transform.scale(self.fond, RESOLUTION)  # Redimensionnez l'image en fonction de la taille de la fenêtre
         
         # Initialisation de l'état du jeu (menu au départ)
         self.etat = "menu"
@@ -52,8 +54,8 @@ class Main:
                         self.jeu.verifier_clic(event)
 
             # Remplir l'écran avec une couleur de fond
-            self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage
-
+            #self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage
+            self.fenetre.blit(self.fond, (0, 0))  # Dessinez l'image de fond
             # Afficher la carte TMX à l'écran (utilisation de Grille pour la gestion des cases)
             
 
@@ -63,6 +65,7 @@ class Main:
             elif self.etat == "selection":
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
+                self.fenetre.fill(BLANC)
                 self.grille.afficher(self.fenetre, self.tmx_data)
                 self.jeu.afficher(self.fenetre,self.tmx_data)
                 

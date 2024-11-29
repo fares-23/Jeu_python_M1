@@ -5,9 +5,10 @@ from constante import *
 class Menu:
     def __init__(self, fenetre):
         self.fenetre = fenetre
+        self.image = pygame.image.load("assets/interface/MenuButtonPreLight.png")
         self.boutons = [            
-            Bouton("Start", self.fenetre.get_width() // 2 - 50, self.fenetre.get_height() // 2 - 80, 100, 50),
-            Bouton("Quit", self.fenetre.get_width() // 2 - 50, self.fenetre.get_height() // 2 - 20, 100, 50)
+            Bouton("Start", self.fenetre.get_width() // 2 - 50, self.fenetre.get_height() // 2 - 80, 100, 50,NOIR,self.image),
+            Bouton("Quit", self.fenetre.get_width() // 2 - 50, self.fenetre.get_height() // 2 - 20, 100, 50,NOIR,self.image)
         ]
 
     def afficher(self):

@@ -1,22 +1,24 @@
 import pygame
 
 class Bouton:
-    def __init__(self, text, x, y, width, height):
+    def __init__(self, text, x, y, width, height, couleur, image=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.couleur_contour = (0, 0, 0)  # couleur noire par défaut
-        self.couleur_contour_survol = (255, 0, 0)  # couleur rouge pour le survol
-
+        self.couleur = couleur
+        self.image = image
+        if self.image:
+            self.image = pygame.transform.scale(self.image, (width, height))
+        
     def afficher(self, fenetre):
-        pygame.draw.rect(fenetre, (0, 0, 0), self.rect)
-        pygame.draw.rect(fenetre, self.couleur_contour, self.rect, 2)
+        if self.image:
+            fenetre.blit(self.image, self.rect)
+        else:
+            pygame.draw.rect(fenetre, self.couleur, self.rect)
         font = pygame.font.Font(None, 36)
         text = font.render(self.text, True, (255, 255, 255))
         fenetre.blit(text, (self.x + (self.width - text.get_width()) // 2, self.y + (self.height - text.get_height()) // 2))
-
-
 

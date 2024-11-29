@@ -1,7 +1,7 @@
 TAILLE_GRILLE = 48*40
 TAILLE_CASE = 16
  
-RESOLUTION = (48 * TAILLE_CASE+100 , 40 * TAILLE_CASE + 100 )  # Ajustez la taille de la fenêtre
+RESOLUTION = (48 * TAILLE_CASE+432 , 40 * TAILLE_CASE + 80 )  # Ajustez la taille de la fenêtre (1200,720)
 
 COULEUR_GRILLE = (0, 0, 0)
 COULEUR_DEPLACEMENT = (0, 255, 0)

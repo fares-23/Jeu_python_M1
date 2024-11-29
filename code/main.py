@@ -52,10 +52,10 @@ class Main:
                         self.jeu.verifier_clic(event)
 
             # Remplir l'écran avec une couleur de fond
-            self.fenetre.fill((0, 0, 0))  # Fond noir pour vérifier l'affichage
+            self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage
 
             # Afficher la carte TMX à l'écran (utilisation de Grille pour la gestion des cases)
-            self.grille.afficher(self.fenetre, self.tmx_data)
+            
 
             # Afficher le contenu en fonction de l'état actuel du jeu
             if self.etat == "menu":
@@ -63,7 +63,9 @@ class Main:
             elif self.etat == "selection":
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
+                self.grille.afficher(self.fenetre, self.tmx_data)
                 self.jeu.afficher(self.fenetre,self.tmx_data)
+                
 
             # Mettre à jour l'affichage à chaque itération
             pygame.display.flip()

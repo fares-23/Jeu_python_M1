@@ -10,7 +10,13 @@ COULEUR_FOND = (255, 255, 255)  # Définition de la couleur de fond
  
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
+ROUGE = (255, 0, 0) #chevalier
+VERT = (0, 255, 0) #archer
+BLEU = (0, 0, 255) #mage
 
 Atk_chevalier = 30
 vit_chevalier = 10
 def_chevalier = 20 
+
+coordonnee_start = [[(3*TAILLE_CASE,3*TAILLE_CASE),(4*TAILLE_CASE,4*TAILLE_CASE),(5*TAILLE_CASE,5*TAILLE_CASE),(5*TAILLE_CASE,6*TAILLE_CASE),(6*TAILLE_CASE,5*TAILLE_CASE)],
+                    [(10*TAILLE_CASE,10*TAILLE_CASE),(13*TAILLE_CASE,13*TAILLE_CASE),(11*TAILLE_CASE,11*TAILLE_CASE),(15*TAILLE_CASE,15*TAILLE_CASE),(12*TAILLE_CASE,12*TAILLE_CASE)]]

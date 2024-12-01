@@ -2,6 +2,11 @@ import pygame
 from constante import *
 from menu import Menu
 from bouton import Bouton
+from empire_Adrastien import Empire_Adrastien
+from saint_Royaume_de_Faerghus import Saint_Royaume_de_Faerghus
+from alliance_de_Leicester import Alliance_de_Leicester
+
+
 class Selection:
     def __init__(self, fenetre):
         self.fenetre = fenetre  
@@ -17,6 +22,7 @@ class Selection:
                         Bouton("Suivant",self.fenetre.get_width() // 2 - 100, self.fenetre.get_height() // 2 + 200, 200, 50,NOIR,self.image[0])]
         
         self.royaumes_selectionnes = []
+        self.liste_troupe = []
         self.images =  [pygame.transform.smoothscale(pygame.image.load("assets/blason/Adrestian_crest.webp"), (200, 200)),
                         pygame.transform.smoothscale(pygame.image.load("assets/blason/Faerghus_crest.webp"), (200, 200)),
                         pygame.transform.smoothscale(pygame.image.load("assets/blason/Leicester_crest.webp"), (200, 200))]
@@ -51,9 +57,25 @@ class Selection:
                     self.royaumes_selectionnes.remove("Alliance de Leicester")
                 else:
                     self.royaumes_selectionnes.append("Alliance de Leicester")
+                    
             elif self.boutons[3].rect.collidepoint(event.pos) and len(self.royaumes_selectionnes) == 2:
+                for i in range(len(self.royaumes_selectionnes)):
+                
+                    if self.royaumes_selectionnes[i] == "Empire Adrastien":
+                        self.royaumes_selectionnes[i] = Empire_Adrastien()
+                        self.royaumes_selectionnes[i].armee(coordonnee_start[i])
+                        self.liste_troupe += self.royaumes_selectionnes[i].troupe
+                        
+                    elif self.royaumes_selectionnes[i] == "Saint Royaume de Faerghus":
+                        self.royaumes_selectionnes[i] = Saint_Royaume_de_Faerghus()
+                        self.royaumes_selectionnes[i].armee(coordonnee_start[i])
+                        self.liste_troupe += self.royaumes_selectionnes[i].troupe
+                        
+                    elif self.royaumes_selectionnes[i] == "Alliance de Leicester":
+                        self.royaumes_selectionnes[i] = Alliance_de_Leicester()
+                        self.royaumes_selectionnes[i].armee(coordonnee_start[i])
+                        self.liste_troupe += self.royaumes_selectionnes[i].troupe
                 return "jeu"
+                    
         return "selection"
     
-    def get_royaumes_selectionnes(self):
-        return self.royaumes_selectionnes

@@ -52,6 +52,7 @@ class Main:
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
                         self.jeu.verifier_clic(event)
+                        self.jeu.liste_personnage = self.selection.liste_troupe
 
             # Remplir l'écran avec une couleur de fond
             #self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage

@@ -1,10 +1,11 @@
 import pygame
 from personnage import Personnage
+from constante import *
 
 class Mage(Personnage):
-    def __init__(self, x, y,couleur_perso):
+    def __init__(self, x, y):
         super().__init__(x, y) 
-        self.couleur_perso = couleur_perso 
+        self.image_path =  mage_path 
         self.attaque = 10
         self.defense = 5
         self.pv = 100

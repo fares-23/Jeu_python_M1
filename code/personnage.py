@@ -17,9 +17,7 @@ class Personnage:
         self.selectionne = False
         self.afficher_deplacement_possible = False
         
-        # SPRITE_LARGEUR, SPRITE_HAUTEUR = 32, 32  # Dimensions d'un sprite individuel
-        # sprite_x, sprite_y = 0, 0  # Coordonnées du sprite en haut à gauche dans le sprite sheet
-        # self.image = sprite_sheet.subsurface((sprite_x, sprite_y, SPRITE_LARGEUR, SPRITE_HAUTEUR))
+        self.image_path = None
         
     def afficher_deplacement(self, grille,fenetre,coordonnee):
         if self.afficher_deplacement_possible:
@@ -34,7 +32,9 @@ class Personnage:
                         pygame.draw.rect(fenetre, (0, 0, 255), case, 1)
                         
     def afficher_personnage(self, fenetre):
-        pygame.draw.rect(fenetre, self.couleur_perso, self.rect)
+        image = pygame.image.load(self.image_path).convert_alpha()
+        image = pygame.transform.smoothscale(image, (TAILLE_CASE, TAILLE_CASE))
+        fenetre.blit(image, self.rect)
 
     def deplacement(self, grille,event,coordonnee):
         caseselectionnee = None

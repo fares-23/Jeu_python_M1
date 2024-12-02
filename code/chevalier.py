@@ -1,10 +1,10 @@
 import pygame
 from personnage import Personnage
-
+from constante import *
 class Chevalier(Personnage):
-    def __init__(self, x, y,couleur_perso):
+    def __init__(self, x, y):
         super().__init__(x, y)  # Appelle le constructeur de Personnage
-        self.couleur_perso = couleur_perso  # Redéfini pour l'archer
+        self.image_path =  chevalier_path 
         self.attaque = 10
         self.defense = 5
         self.pv = 100

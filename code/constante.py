@@ -20,3 +20,8 @@ def_chevalier = 20
 
 coordonnee_start = [[(3*TAILLE_CASE,3*TAILLE_CASE),(4*TAILLE_CASE,4*TAILLE_CASE),(5*TAILLE_CASE,5*TAILLE_CASE),(5*TAILLE_CASE,6*TAILLE_CASE),(6*TAILLE_CASE,5*TAILLE_CASE)],
                     [(10*TAILLE_CASE,10*TAILLE_CASE),(13*TAILLE_CASE,13*TAILLE_CASE),(11*TAILLE_CASE,11*TAILLE_CASE),(15*TAILLE_CASE,15*TAILLE_CASE),(12*TAILLE_CASE,12*TAILLE_CASE)]]
+
+#image_path
+archer_path = "assets/tiles/dungeon_crawl/monster/deep_elf_master_archer.png"
+chevalier_path = "assets/tiles/dungeon_crawl/monster/deep_elf_knight_new.png"
+mage_path = "assets/tiles/dungeon_crawl/monster/deep_elf_mage.png"

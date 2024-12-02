@@ -21,11 +21,11 @@ class Saint_Royaume_de_Faerghus(Royaume):
         armee = random.choices(["chevalier", "archer", "mage"], weights=[self.__prob_chevalier, self.__prob_archer, self.__prob_mage], k=5)
         for i in range(len(armee)):
             if armee[i] == "chevalier":
-                self.__troupe.append(Chevalier(liste_coordonees[i][0],liste_coordonees[i][1],ROUGE))
+                self.__troupe.append(Chevalier(liste_coordonees[i][0],liste_coordonees[i][1]))
             elif armee[i] == "archer":
-                self.__troupe.append(Archer(liste_coordonees[i][0],liste_coordonees[i][1],VERT))
+                self.__troupe.append(Archer(liste_coordonees[i][0],liste_coordonees[i][1]))
             elif armee[i] == "mage":
-                self.__troupe.append(Mage(liste_coordonees[i][0],liste_coordonees[i][1],BLEU))
+                self.__troupe.append(Mage(liste_coordonees[i][0],liste_coordonees[i][1]))
     
     @property
     def troupe(self):

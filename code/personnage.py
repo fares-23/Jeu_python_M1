@@ -28,8 +28,7 @@ class Personnage:
                     if (case.x,case.y) in coordonnee:
                         pass
                     elif abs(dx) + abs(dy) <= self.vitesse:
-                        pygame.draw.rect(fenetre, COULEUR_DEPLACEMENT, case)
-                        pygame.draw.rect(fenetre, (0, 0, 255), case, 1)
+                        pygame.draw.rect(fenetre, ROUGE, case, 1)
                         
     def afficher_personnage(self, fenetre):
         image = pygame.image.load(self.image_path).convert_alpha()

@@ -15,10 +15,6 @@ class Jeu:
 # Création de la grille, du personnage
         self.grille = Grille(taille_x, taille_y, 0, 0)
 
-        # self.arche = Archer(3 * TAILLE_CASE, 3 * TAILLE_CASE, (150, 0, 0))
-        # self.mage = Mage(7 * TAILLE_CASE, 7 * TAILLE_CASE, (0, 150, 0))
-        # self.chevalier = Chevalier(5 * TAILLE_CASE, 5 * TAILLE_CASE, (0, 0, 150))
-        # self.liste_personnage = [self.arche, self.mage, self.chevalier]
         self.__liste_personnage = []
         
         

@@ -17,6 +17,7 @@ class Jeu:
 
         self.__liste_personnage = []
         self.__tour = 0
+        self.__next_tour = False
         
     def afficher(self, fenetre, tmx_data):
         self.grille.afficher(fenetre,tmx_data)
@@ -29,10 +30,22 @@ class Jeu:
         for i in range(len(self.__liste_personnage)):
             coordonnee.append(self.__liste_personnage[i].get_coordonnees())
         
+        #gère les déplacements des personnages
+        action = []
         for i in range(len(self.__liste_personnage)):
             if self.__liste_personnage[i].royaume == liste_royaume[self.tour%2]:
                 self.__liste_personnage[i].deplacement(self.grille,event,coordonnee)
-            
+                action.append(self.__liste_personnage[i].action)
+                
+        #gère les actions des personnages
+        if True in action:
+            self.__next_tour = False
+        else:
+            self.__next_tour = True
+            self.__tour += 1
+            for i in range(len(self.__liste_personnage)):
+                self.__liste_personnage[i].action = True
+        
     @property
     def liste_personnage(self):
         return self.__liste_personnage
@@ -45,5 +58,3 @@ class Jeu:
     def tour(self):
         return self.__tour
     
-    def incrementer(self):
-        self.__tour +=1

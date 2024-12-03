@@ -57,11 +57,6 @@ class Main:
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
                         self.jeu.verifier_clic(event,self.selection.liste_royaume)
-                # Incrémente le compteur lorsque la touche Enter est appuyée
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        self.jeu.incrementer()
-                        print(self.jeu.tour)
                         
             self.jeu.liste_personnage = self.selection.liste_troupe
 

@@ -13,6 +13,7 @@ class Archer(Personnage):
         self.esquive = 0.3
         
         self.royaume = royaume
+        self.action = True
         
     def deplacement(self,grille,event,coordonnee):
         super().deplacement(grille,event,coordonnee)

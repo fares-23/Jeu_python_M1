@@ -11,6 +11,7 @@ class Chevalier(Personnage):
         self.vitesse = 3  # Vitesse spécifique à l'archer
         
         self.royaume = royaume
+        self.action = True 
 
     def deplacement(self,grille,event,coordonnee):
         super().deplacement(grille,event,coordonnee)

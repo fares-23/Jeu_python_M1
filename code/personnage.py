@@ -15,6 +15,8 @@ class Personnage:
         
         self.royaume = None
         
+        self.action = None # True si le personnage n'a pas encore joué, False sinon
+        
         self.rect = pygame.Rect(x, y, TAILLE_CASE, TAILLE_CASE)
         self.selectionne = False
         self.afficher_deplacement_possible = False
@@ -38,35 +40,38 @@ class Personnage:
         fenetre.blit(image, self.rect)
 
     def deplacement(self, grille,event,coordonnee):
-        caseselectionnee = None
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            if self.rect.collidepoint(mouse_pos):
-                if self.selectionne: 
-                    self.afficher_deplacement_possible = False
-                    self.selectionne = False
+        if self.action == True:
+            caseselectionnee = None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if self.rect.collidepoint(mouse_pos):
+                    if self.selectionne: 
+                        self.afficher_deplacement_possible = False
+                        self.selectionne = False
+                    else:
+                        self.selectionne = True
+                        self.afficher_deplacement_possible = True
                 else:
-                    self.selectionne = True
-                    self.afficher_deplacement_possible = True
-            else:
-                for ligne in grille.cases:
-                    for case in ligne:
-                        if case.collidepoint(mouse_pos) and self.selectionne:
-                            dx = (case.x - self.rect.x) // TAILLE_CASE
-                            dy = (case.y - self.rect.y) // TAILLE_CASE
-                            
-                            if (case.x,case.y) in coordonnee:
-                                self.afficher_deplacement_possible = False
-                                self.selectionne = False
-                                pass
-                            
-                            elif abs(dx) + abs(dy) <= self.vitesse:
-                                self.rect.x = case.x
-                                self.rect.y = case.y
-                                self.afficher_deplacement_possible = False
-                                self.selectionne = False
-                self.selectionne = False 
-                self.afficher_deplacement_possible = False 
+                    for ligne in grille.cases:
+                        for case in ligne:
+                            if case.collidepoint(mouse_pos) and self.selectionne:
+                                dx = (case.x - self.rect.x) // TAILLE_CASE
+                                dy = (case.y - self.rect.y) // TAILLE_CASE
+
+                                if (case.x,case.y) in coordonnee:
+                                    self.afficher_deplacement_possible = False
+                                    self.selectionne = False
+                                    pass
+                                
+                                elif abs(dx) + abs(dy) <= self.vitesse:
+                                    self.rect.x = case.x
+                                    self.rect.y = case.y
+                                    self.afficher_deplacement_possible = False
+                                    self.selectionne = False
+                                    self.action = False
+                                    
+                    self.selectionne = False 
+                    self.afficher_deplacement_possible = False 
 
     def combat(self):
         print("combat")

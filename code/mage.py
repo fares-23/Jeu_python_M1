@@ -12,6 +12,7 @@ class Mage(Personnage):
         self.vitesse = 2 
         
         self.royaume = royaume
+        self.action = True
 
     def deplacement(self,grille,event,coordonnee):
         super().deplacement(grille,event,coordonnee)

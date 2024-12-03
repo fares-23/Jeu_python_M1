@@ -16,7 +16,7 @@ class Jeu:
         self.grille = Grille(taille_x, taille_y, 0, 0)
 
         self.__liste_personnage = []
-        
+        self.__tour = 0
         
     def afficher(self, fenetre, tmx_data):
         self.grille.afficher(fenetre,tmx_data)
@@ -24,15 +24,14 @@ class Jeu:
             self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees())
             self.__liste_personnage[i].afficher_personnage(fenetre)
         
-    def verifier_clic(self, event):
+    def verifier_clic(self, event,liste_royaume):
         coordonnee = []
         for i in range(len(self.__liste_personnage)):
             coordonnee.append(self.__liste_personnage[i].get_coordonnees())
-            
+        
         for i in range(len(self.__liste_personnage)):
-            self.__liste_personnage[i].deplacement(self.grille,event,coordonnee)
-            print(self.__liste_personnage[i].get_coordonnees())
-
+            if self.__liste_personnage[i].royaume == liste_royaume[self.tour%2]:
+                self.__liste_personnage[i].deplacement(self.grille,event,coordonnee)
             
     @property
     def liste_personnage(self):
@@ -42,3 +41,9 @@ class Jeu:
     def liste_personnage(self, new):
         self.__liste_personnage = new
     
+    @property
+    def tour(self):
+        return self.__tour
+    
+    def incrementer(self):
+        self.__tour +=1

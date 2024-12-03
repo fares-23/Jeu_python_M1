@@ -22,6 +22,7 @@ class Selection:
                         Bouton("Suivant",self.fenetre.get_width() // 2 - 100, self.fenetre.get_height() // 2 + 200, 200, 50,NOIR,self.image[0])]
         
         self.royaumes_selectionnes = []
+        self.liste_royaume = []
         self.liste_troupe = []
         self.images =  [pygame.transform.smoothscale(pygame.image.load("assets/blason/Adrestian_crest.webp"), (200, 200)),
                         pygame.transform.smoothscale(pygame.image.load("assets/blason/Faerghus_crest.webp"), (200, 200)),
@@ -45,18 +46,24 @@ class Selection:
             if self.boutons[0].rect.collidepoint(event.pos):
                 if "Empire Adrastien" in self.royaumes_selectionnes:
                     self.royaumes_selectionnes.remove("Empire Adrastien")
+                    self.liste_royaume.remove("Empire Adrastien")
                 else:
                     self.royaumes_selectionnes.append("Empire Adrastien")
+                    self.liste_royaume.append("Empire Adrastien")
             elif self.boutons[1].rect.collidepoint(event.pos):
                 if "Saint Royaume de Faerghus" in self.royaumes_selectionnes:
                     self.royaumes_selectionnes.remove("Saint Royaume de Faerghus")
+                    self.liste_royaume.remove("Saint Royaume de Faerghus")
                 else:
                     self.royaumes_selectionnes.append("Saint Royaume de Faerghus")
+                    self.liste_royaume.append("Saint Royaume de Faerghus")
             elif self.boutons[2].rect.collidepoint(event.pos):
                 if "Alliance de Leicester" in self.royaumes_selectionnes:
                     self.royaumes_selectionnes.remove("Alliance de Leicester")
+                    self.liste_royaume.remove("Alliance de Leicester")
                 else:
                     self.royaumes_selectionnes.append("Alliance de Leicester")
+                    self.liste_royaume.append("Alliance de Leicester")
                     
             elif self.boutons[3].rect.collidepoint(event.pos) and len(self.royaumes_selectionnes) == 2:
                 for i in range(len(self.royaumes_selectionnes)):

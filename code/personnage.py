@@ -5,13 +5,15 @@ import sys
 
 class Personnage:
     
-    def __init__(self, x, y,):
+    def __init__(self, x, y):
         #variables de personnage
         self.couleur_perso = (255, 0, 0)
         self.attaque = 0
         self.defense = 0
         self.pv = 0
         self.vitesse = 3
+        
+        self.royaume = None
         
         self.rect = pygame.Rect(x, y, TAILLE_CASE, TAILLE_CASE)
         self.selectionne = False
@@ -43,7 +45,7 @@ class Personnage:
                 if self.selectionne: 
                     self.afficher_deplacement_possible = False
                     self.selectionne = False
-                else: 
+                else:
                     self.selectionne = True
                     self.afficher_deplacement_possible = True
             else:
@@ -52,10 +54,12 @@ class Personnage:
                         if case.collidepoint(mouse_pos) and self.selectionne:
                             dx = (case.x - self.rect.x) // TAILLE_CASE
                             dy = (case.y - self.rect.y) // TAILLE_CASE
+                            
                             if (case.x,case.y) in coordonnee:
                                 self.afficher_deplacement_possible = False
                                 self.selectionne = False
                                 pass
+                            
                             elif abs(dx) + abs(dy) <= self.vitesse:
                                 self.rect.x = case.x
                                 self.rect.y = case.y

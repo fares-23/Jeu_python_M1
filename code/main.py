@@ -9,8 +9,13 @@ from jeu import Jeu
 from selection import Selection
 
 
-class Main:
+class Main: 
     pygame.init()
+    
+    #musique
+    #pygame.mixer.init()
+    #pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
+    #pygame.mixer.music.play(loops=-1,start=0.0, fade_ms=5000)
 
     def __init__(self):
         # Initialisation de la fenêtre Pygame
@@ -38,7 +43,7 @@ class Main:
         
         # Initialisation de l'état du jeu (menu au départ)
         self.etat = "menu"
-
+        
     def boucle_principale(self):
         while True:
             for event in pygame.event.get():
@@ -51,7 +56,12 @@ class Main:
                     elif self.etat == "selection":
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
-                        self.jeu.verifier_clic(event)
+                        self.jeu.verifier_clic(event,self.selection.liste_royaume)
+                # Incrémente le compteur lorsque la touche Enter est appuyée
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        self.jeu.incrementer()
+                        print(self.jeu.tour)
                         
             self.jeu.liste_personnage = self.selection.liste_troupe
 

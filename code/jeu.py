@@ -25,8 +25,13 @@ class Jeu:
             self.__liste_personnage[i].afficher_personnage(fenetre)
         
     def verifier_clic(self, event):
+        coordonnee = []
         for i in range(len(self.__liste_personnage)):
-            self.__liste_personnage[i].deplacement(self.grille,event,self.__liste_personnage[i].get_coordonnees())
+            coordonnee.append(self.__liste_personnage[i].get_coordonnees())
+            
+        for i in range(len(self.__liste_personnage)):
+            self.__liste_personnage[i].deplacement(self.grille,event,coordonnee)
+            print(self.__liste_personnage[i].get_coordonnees())
 
             
     @property

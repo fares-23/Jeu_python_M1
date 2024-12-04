@@ -18,6 +18,7 @@ class Chevalier(Personnage):
 
     def afficher_personnage(self, fenetre):
         super().afficher_personnage(fenetre)
+        
     def utiliser_competence(self, cible):
          """Compétence 1 : Coup Puissant."""
          degats = (self.attaque * 1.5) - cible.defense

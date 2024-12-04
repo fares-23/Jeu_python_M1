@@ -10,8 +10,8 @@ import sys
 pygame.init()
 
 # Définition des dimensions de la fenêtre
-fenetre = pygame.display.set_mode((TAILLE_GRILLE * TAILLE_CASE, TAILLE_GRILLE * TAILLE_CASE))
-
+fenetre = pygame.display.set_mode(RESOLUTION)
+ 
 # Création de la grille
 grille = Grille(TAILLE_GRILLE, fenetre)
 

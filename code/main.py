@@ -46,14 +46,6 @@ class Main:
         self.etat = "menu"
         
     def boucle_principale(self):
-        # Définition de la police de caractères et de la taille du texte
-        police = pygame.font.SysFont("Arial", 24)
-        # Définition du texte à afficher
-        texte = "Votre texte ici"
-        surface_texte = police.render(texte, True, (0, 0, 0))  # Noir
-        # Définition de la position du texte
-        x = 0  # Vous pouvez ajuster cette valeur pour déplacer le texte horizontalement
-        y = 720  # Vous avez spécifié cette valeur
         
         while True:
             for event in pygame.event.get():
@@ -88,7 +80,6 @@ class Main:
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
-                self.fenetre.blit(surface_texte, (x, y))
                 self.jeu.afficher(self.fenetre,self.tmx_data)
                 
 

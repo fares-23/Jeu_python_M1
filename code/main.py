@@ -73,7 +73,7 @@ class Main:
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
-                self.grille.afficher(self.fenetre, self.tmx_data)
+
                 self.jeu.afficher(self.fenetre,self.tmx_data)
                 
 

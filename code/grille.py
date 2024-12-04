@@ -20,16 +20,20 @@ class Grille:
 
     def afficher(self, fenetre, tmx_data):
         # Vérification du chargement des tuiles
-        #rint("Affichage des tuiles:")
         for layer in tmx_data.visible_layers:
             if hasattr(layer, "tiles"):
                 for x, y, tile in layer.tiles():
                     # Vérifiez si la tuile est valide
                     if tile:
-                        #print(f"Tuile à la position ({x}, {y})")
-                        fenetre.blit(tile, (x * TAILLE_CASE + self.offset_x, y * TAILLE_CASE + self.offset_y))
+                        # Calculez la position de la case
+                        case_x = x // 3
+                        case_y = y // 3
+                        # Calculez la position de la tuile dans la case
+                        tuile_x = (x % 3) * TAILLE_CASE // 3
+                        tuile_y = (y % 3) * TAILLE_CASE // 3
+                        # Affichez la tuile
+                        fenetre.blit(tile, (case_x * TAILLE_CASE + tuile_x + self.offset_x, case_y * TAILLE_CASE + tuile_y + self.offset_y))
                     else:
-                        #print(f"Aucune tuile trouvée à ({x}, {y})")
                         pass
         # Dessiner les cases de la grille
         for ligne in self.cases:

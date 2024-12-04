@@ -19,7 +19,7 @@ class Main:
 
     def __init__(self):
         # Initialisation de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode(RESOLUTION)
+        self.fenetre = pygame.display.set_mode(RESOLUTION_JEU)
         pygame.display.set_caption("Jeu avec Tiled")
 
         # Charger la carte TMX
@@ -30,6 +30,7 @@ class Main:
             print(f"Erreur lors du chargement de la carte : {e}")
             pygame.quit()
             sys.exit()
+    
 
         # Créer une instance de Grille pour gérer les cases
         self.grille = Grille(taille_x=120, taille_y=120, x=0, y=0)
@@ -39,17 +40,30 @@ class Main:
         self.selection = Selection(self.fenetre)
         self.jeu = Jeu()
         self.fond = pygame.image.load("assets/interface/main_menu_background.jpg")  # Remplacez par le chemin vers votre image
-        self.fond = pygame.transform.scale(self.fond, RESOLUTION)  # Redimensionnez l'image en fonction de la taille de la fenêtre
+        self.fond = pygame.transform.scale(self.fond, RESOLUTION_JEU)  # Redimensionnez l'image en fonction de la taille de la fenêtre
         
         # Initialisation de l'état du jeu (menu au départ)
         self.etat = "menu"
         
     def boucle_principale(self):
+        # Définition de la police de caractères et de la taille du texte
+        police = pygame.font.SysFont("Arial", 24)
+        # Définition du texte à afficher
+        texte = "Votre texte ici"
+        surface_texte = police.render(texte, True, (0, 0, 0))  # Noir
+        # Définition de la position du texte
+        x = 0  # Vous pouvez ajuster cette valeur pour déplacer le texte horizontalement
+        y = 720  # Vous avez spécifié cette valeur
+        
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.etat == "menu":
                         self.etat = self.menu.verifier_clic(event)
@@ -62,8 +76,9 @@ class Main:
 
             # Remplir l'écran avec une couleur de fond
             #self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage
-            self.fenetre.blit(self.fond, (0, 0))  # Dessinez l'image de fond
+            self.fenetre.blit(self.fond,(0, 0))  # Dessinez l'image de fond
             # Afficher la carte TMX à l'écran (utilisation de Grille pour la gestion des cases)
+            
             
 
             # Afficher le contenu en fonction de l'état actuel du jeu
@@ -73,7 +88,7 @@ class Main:
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
-                self.grille.afficher(self.fenetre, self.tmx_data)
+                self.fenetre.blit(surface_texte, (x, y))
                 self.jeu.afficher(self.fenetre,self.tmx_data)
                 
 

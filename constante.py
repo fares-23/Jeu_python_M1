@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -8,6 +9,10 @@ Created on Wed Dec  4 01:25:50 2024
 
 TAILLE_GRILLE = 10*10
 TAILLE_CASE = 50
+=======
+TAILLE_GRILLE = 48*40
+TAILLE_CASE = 48
+>>>>>>> 42633387ac6a755fda646c8b598d02370c1ae986
  
 #RESOLUTION = (48 * TAILLE_CASE+432 , 40 * TAILLE_CASE + 80 )  # Ajustez la taille de la fenêtre (1200,720)
 RESOLUTION = (1200, 720)
@@ -32,4 +37,8 @@ nb_troupe = 5
 #image_path
 archer_path = "assets/tiles/dungeon_crawl/monster/deep_elf_master_archer.png"
 chevalier_path = "assets/tiles/dungeon_crawl/monster/deep_elf_knight_new.png"
+<<<<<<< HEAD
 mage_path = "assets/tiles/dungeon_crawl/monster/deep_elf_mage.png"
+=======
+mage_path = "assets/tiles/dungeon_crawl/monster/deep_elf_mage.png"
+>>>>>>> 42633387ac6a755fda646c8b598d02370c1ae986

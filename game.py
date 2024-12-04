@@ -10,8 +10,8 @@ import sys
 pygame.init()
 
 # Définition des dimensions de la fenêtre
-fenetre = pygame.display.set_mode((TAILLE_GRILLE * TAILLE_CASE, TAILLE_GRILLE * TAILLE_CASE))
-
+fenetre = pygame.display.set_mode(RESOLUTION)
+ 
 # Création de la grille
 grille = Grille(TAILLE_GRILLE, fenetre)
 
@@ -129,6 +129,7 @@ while True:
         print(f"Le gagnant est {liste_personnage[0].__class__.__name__}!")
         pygame.quit()
         sys.exit()
+<<<<<<< HEAD
 """
 Pygame démarre :
 
@@ -187,3 +188,45 @@ Fin du jeu :
 Lorsque la liste liste_personnage ne contient qu’un seul personnage, le jeu se termine.
 Le personnage restant est déclaré vainqueur, et le programme affiche son type (ex. : Le gagnant est Archer !).
 """
+=======
+""" 
+. Lancement du Jeu
+Initialisation : Lorsque vous exécutez le programme (python jeu.py), Pygame s'initialise et une fenêtre de jeu s'ouvre, affichant la grille sur laquelle les personnages se déplacent.
+Affichage de la grille : La grille est dessinée sur l'écran, servant de terrain de jeu pour les personnages.
+2. Présentation des Personnages
+Trois types de personnages sont disponibles :
+Archer : Un personnage avec des attaques à distance et des compétences comme le "Tir Précis" et la "Pluie de Flèches".
+Mage : Un personnage qui utilise des compétences magiques telles que la "Boule de Feu" et le "Soin".
+Chevalier : Un personnage de mêlée qui peut utiliser des compétences de protection et de zone, comme le "Coup Puissant" et la "Frappe de Zone".
+Chaque personnage a une couleur différente pour le distinguer facilement :
+Archer : Rouge
+Mage : Vert
+Chevalier : Bleu
+3. Tour de Jeu
+Gestion des tours : Le jeu est structuré en tours. Un joueur actif prend son tour pour déplacer son personnage, choisir une cible et utiliser des compétences.
+Changement de tour : Lorsque le joueur appuie sur RETURN, le programme passe au joueur suivant en mettant à jour la variable joueur_actuel, qui pointe vers le prochain personnage de la liste.
+4. Interaction avec les Personnages
+Déplacement :
+
+Utilisez les touches directionnelles (UP, DOWN, LEFT, RIGHT) pour déplacer le personnage actif sur la grille.
+Un clic gauche de la souris est également utilisé pour déplacer le personnage vers une case cliquée, en appelant la méthode grille.deplacer_personnage().
+Utilisation des compétences :
+
+Lorsqu'une touche SPACE est pressée, le programme affiche les compétences disponibles pour le personnage actif dans la console.
+L'utilisateur choisit une compétence en entrant un numéro (ex. : "1" pour "Tir Précis") et appuie sur ENTER.
+Le programme exécute la compétence choisie sur une cible. Si une compétence nécessite des coordonnées (comme la téléportation du Mage), l'utilisateur doit entrer ces coordonnées via input.
+5. Sélection de la Cible
+Cible automatique : La fonction choisir_cible() sélectionne automatiquement la première cible valide (un autre personnage ayant encore des PV).
+Clic pour sélectionner la cible : Si le programme est configuré pour permettre la sélection par clic, le joueur peut cliquer sur un personnage pour le sélectionner comme cible.
+Affichage des options de compétence : Après la sélection de la cible, l'utilisateur choisit la compétence à utiliser, ce qui déclenche l'effet de la compétence.
+6. Affichage des Points de Vie (PV)
+Affichage des PV : Les points de vie de chaque personnage sont affichés au-dessus de leur position sur la grille. Cela permet de suivre l'état de santé de chaque personnage.
+7. Exécution des Compétences
+Compétences des personnages :
+Les compétences des personnages sont définies dans les classes Archer, Mage, et Chevalier. Par exemple, l'Archer peut utiliser le "Tir Précis" pour infliger des dégâts directs, tandis que le Mage peut utiliser la "Boule de Feu" pour attaquer à distance.
+Effets des compétences : Selon la compétence choisie, des effets différents sont appliqués, comme réduire les PV d'une cible, soigner un allié ou changer de position sur la grille (téléportation).
+8. Fin de Partie
+Vérification des PV : À chaque tour, le programme vérifie si des personnages ont des PV <= 0 et les élimine de la liste des personnages.
+Déclaration du gagnant : Le jeu se termine lorsqu'il ne reste plus qu'un seul personnage en vie, qui est déclaré vainqueur.
+"""
+>>>>>>> 42633387ac6a755fda646c8b598d02370c1ae986

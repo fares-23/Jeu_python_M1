@@ -50,6 +50,10 @@ class Main:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.KEYDOWN: # Gestion de la touche Echap pour quitter le jeu
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.etat == "menu":
                         self.etat = self.menu.verifier_clic(event)

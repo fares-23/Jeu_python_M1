@@ -129,7 +129,7 @@ while True:
         print(f"Le gagnant est {liste_personnage[0].__class__.__name__}!")
         pygame.quit()
         sys.exit()
-<<<<<<< HEAD
+
 """
 Pygame démarre :
 
@@ -188,7 +188,7 @@ Fin du jeu :
 Lorsque la liste liste_personnage ne contient qu’un seul personnage, le jeu se termine.
 Le personnage restant est déclaré vainqueur, et le programme affiche son type (ex. : Le gagnant est Archer !).
 """
-=======
+
 """ 
 . Lancement du Jeu
 Initialisation : Lorsque vous exécutez le programme (python jeu.py), Pygame s'initialise et une fenêtre de jeu s'ouvre, affichant la grille sur laquelle les personnages se déplacent.
@@ -229,4 +229,3 @@ Effets des compétences : Selon la compétence choisie, des effets différents s
 Vérification des PV : À chaque tour, le programme vérifie si des personnages ont des PV <= 0 et les élimine de la liste des personnages.
 Déclaration du gagnant : Le jeu se termine lorsqu'il ne reste plus qu'un seul personnage en vie, qui est déclaré vainqueur.
 """
->>>>>>> 42633387ac6a755fda646c8b598d02370c1ae986

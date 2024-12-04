@@ -24,7 +24,7 @@ class Main:
 
         # Charger la carte TMX
         try:
-            self.tmx_data = load_pygame("map.tmx")
+            self.tmx_data = load_pygame("map1.tmx")
             print("Carte TMX chargée avec succès")
         except Exception as e:
             print(f"Erreur lors du chargement de la carte : {e}")

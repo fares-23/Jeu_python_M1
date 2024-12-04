@@ -76,7 +76,7 @@ class Main:
 
             # Remplir l'écran avec une couleur de fond
             #self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage
-            self.fenetre.blit(self.fond)  # Dessinez l'image de fond
+            self.fenetre.blit(self.fond,(0, 0))  # Dessinez l'image de fond
             # Afficher la carte TMX à l'écran (utilisation de Grille pour la gestion des cases)
             
             

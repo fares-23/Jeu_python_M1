@@ -147,6 +147,7 @@ while True:
         print(f"Le gagnant est {liste_personnage[0].__class__.__name__}!")
         pygame.quit()
         sys.exit()
+<<<<<<< HEAD
 """ 
 1. Lancement du jeu
 Initialisation :
@@ -211,4 +212,105 @@ Coup Puissant : Inflige de gros dégâts à une cible unique.
 Protection : Augmente temporairement la défense des alliés.
 Bouclier Divin : Rend le Chevalier invincible pour un tour.
 Frappe de Zone : Attaque tous les ennemis autour de lui.
+=======
+
+"""
+Pygame démarre :
+
+La bibliothèque Pygame initialise l'interface graphique.
+Une fenêtre est créée pour afficher la grille et les personnages.
+Création de la grille et des personnages :
+
+La grille représente le terrain de jeu, divisé en cases.
+Trois personnages (Archer, Mage, Chevalier) sont placés sur la grille à des positions prédéfinies. Chaque personnage a :
+Une couleur pour le distinguer.
+Des points de vie (PV).
+Des compétences uniques.
+Variables de gestion :
+
+Une liste liste_personnage contient les trois personnages.
+Une variable personnage_selectionne est utilisée pour garder une référence au personnage actuellement sélectionné.
+2. Affichage
+À chaque tour, la fenêtre est mise à jour :
+Grille : La grille est affichée en arrière-plan.
+Personnages : Les personnages sont affichés sur leurs positions actuelles.
+Points de vie : Les PV de chaque personnage sont affichés au-dessus de lui.
+3. Sélection des Personnages
+Clic gauche : Lorsque l'utilisateur clique sur un personnage, ce personnage devient le personnage actif (sélectionné).
+Cela est détecté avec la fonction collidepoint, qui vérifie si le clic de la souris se trouve sur le personnage.
+La sélection est indiquée dans la console par un message comme Archer sélectionné !.
+4. Actions du Personnage Sélectionné
+Une fois un personnage sélectionné, l'utilisateur peut effectuer différentes actions :
+
+a. Déplacement
+Utilisez les flèches directionnelles pour déplacer le personnage sur la grille :
+UP : Déplace vers le haut.
+DOWN : Déplace vers le bas.
+LEFT : Déplace à gauche.
+RIGHT : Déplace à droite.
+La position est mise à jour en ajustant les coordonnées du rectangle rect du personnage.
+b. Compétences
+Appuyez sur SPACE pour activer une compétence :
+Le programme demande à l'utilisateur de choisir une compétence via la console.
+Une cible est automatiquement sélectionnée (le premier ennemi valide avec des PV > 0).
+En fonction de la compétence choisie, le personnage effectue une action, comme :
+Infliger des dégâts à une cible.
+Soigner un allié.
+Effectuer une attaque de zone.
+Se téléporter.
+c. Fin du Tour
+Appuyez sur RETURN pour terminer le tour.
+Le personnage sélectionné est désélectionné.
+Le joueur peut cliquer sur un autre personnage pour commencer un nouveau tour.
+5. Gestion des PV et Fin de Partie
+Mise à jour des PV :
+
+Les personnages qui ont 0 PV ou moins sont retirés de liste_personnage.
+Leurs points de vie sont affichés en temps réel au-dessus d'eux.
+Fin du jeu :
+
+Lorsque la liste liste_personnage ne contient qu’un seul personnage, le jeu se termine.
+Le personnage restant est déclaré vainqueur, et le programme affiche son type (ex. : Le gagnant est Archer !).
+"""
+
+""" 
+. Lancement du Jeu
+Initialisation : Lorsque vous exécutez le programme (python jeu.py), Pygame s'initialise et une fenêtre de jeu s'ouvre, affichant la grille sur laquelle les personnages se déplacent.
+Affichage de la grille : La grille est dessinée sur l'écran, servant de terrain de jeu pour les personnages.
+2. Présentation des Personnages
+Trois types de personnages sont disponibles :
+Archer : Un personnage avec des attaques à distance et des compétences comme le "Tir Précis" et la "Pluie de Flèches".
+Mage : Un personnage qui utilise des compétences magiques telles que la "Boule de Feu" et le "Soin".
+Chevalier : Un personnage de mêlée qui peut utiliser des compétences de protection et de zone, comme le "Coup Puissant" et la "Frappe de Zone".
+Chaque personnage a une couleur différente pour le distinguer facilement :
+Archer : Rouge
+Mage : Vert
+Chevalier : Bleu
+3. Tour de Jeu
+Gestion des tours : Le jeu est structuré en tours. Un joueur actif prend son tour pour déplacer son personnage, choisir une cible et utiliser des compétences.
+Changement de tour : Lorsque le joueur appuie sur RETURN, le programme passe au joueur suivant en mettant à jour la variable joueur_actuel, qui pointe vers le prochain personnage de la liste.
+4. Interaction avec les Personnages
+Déplacement :
+
+Utilisez les touches directionnelles (UP, DOWN, LEFT, RIGHT) pour déplacer le personnage actif sur la grille.
+Un clic gauche de la souris est également utilisé pour déplacer le personnage vers une case cliquée, en appelant la méthode grille.deplacer_personnage().
+Utilisation des compétences :
+
+Lorsqu'une touche SPACE est pressée, le programme affiche les compétences disponibles pour le personnage actif dans la console.
+L'utilisateur choisit une compétence en entrant un numéro (ex. : "1" pour "Tir Précis") et appuie sur ENTER.
+Le programme exécute la compétence choisie sur une cible. Si une compétence nécessite des coordonnées (comme la téléportation du Mage), l'utilisateur doit entrer ces coordonnées via input.
+5. Sélection de la Cible
+Cible automatique : La fonction choisir_cible() sélectionne automatiquement la première cible valide (un autre personnage ayant encore des PV).
+Clic pour sélectionner la cible : Si le programme est configuré pour permettre la sélection par clic, le joueur peut cliquer sur un personnage pour le sélectionner comme cible.
+Affichage des options de compétence : Après la sélection de la cible, l'utilisateur choisit la compétence à utiliser, ce qui déclenche l'effet de la compétence.
+6. Affichage des Points de Vie (PV)
+Affichage des PV : Les points de vie de chaque personnage sont affichés au-dessus de leur position sur la grille. Cela permet de suivre l'état de santé de chaque personnage.
+7. Exécution des Compétences
+Compétences des personnages :
+Les compétences des personnages sont définies dans les classes Archer, Mage, et Chevalier. Par exemple, l'Archer peut utiliser le "Tir Précis" pour infliger des dégâts directs, tandis que le Mage peut utiliser la "Boule de Feu" pour attaquer à distance.
+Effets des compétences : Selon la compétence choisie, des effets différents sont appliqués, comme réduire les PV d'une cible, soigner un allié ou changer de position sur la grille (téléportation).
+8. Fin de Partie
+Vérification des PV : À chaque tour, le programme vérifie si des personnages ont des PV <= 0 et les élimine de la liste des personnages.
+Déclaration du gagnant : Le jeu se termine lorsqu'il ne reste plus qu'un seul personnage en vie, qui est déclaré vainqueur.
+>>>>>>> a786aef655e57c984f0b9be2482b4154fd521442
 """

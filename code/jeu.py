@@ -4,7 +4,7 @@ from grille import Grille
 from archer import Archer
 from mage import Mage
 from chevalier import Chevalier
-
+from bandeau_inferieur import BandeauInferieur
 
 class Jeu:
     def __init__(self):
@@ -18,12 +18,14 @@ class Jeu:
         self.__liste_personnage = []
         self.__tour = 0
         self.__next_tour = False
-        
+        self.__bandeau = BandeauInferieur()
+
     def afficher(self, fenetre, tmx_data):
         self.grille.afficher(fenetre,tmx_data)
         for i in range(len(self.__liste_personnage)):
             self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees())
             self.__liste_personnage[i].afficher_personnage(fenetre)
+            self.__bandeau.afficher(fenetre)
         
     def verifier_clic(self, event,liste_royaume):
         coordonnee = []

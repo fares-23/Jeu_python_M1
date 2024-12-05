@@ -24,7 +24,7 @@ class Main:
 
         # Charger la carte TMX
         try:
-            self.tmx_data = load_pygame("map2.tmx")
+            self.tmx_data = load_pygame("map3.tmx")
             print("Carte TMX chargée avec succès")
         except Exception as e:
             print(f"Erreur lors du chargement de la carte : {e}")
@@ -46,6 +46,14 @@ class Main:
         self.etat = "menu"
         
     def boucle_principale(self):
+        # Définition de la police de caractères et de la taille du texte
+        police = pygame.font.SysFont("Arial", 24)
+        # Définition du texte à afficher
+        texte = "Votre texte ici"
+        surface_texte = police.render(texte, True, (0, 0, 0))  # Noir
+        # Définition de la position du texte
+        x = 0  # Vous pouvez ajuster cette valeur pour déplacer le texte horizontalement
+        y = 720  # Vous avez spécifié cette valeur
         
         while True:
             for event in pygame.event.get():
@@ -80,6 +88,7 @@ class Main:
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
+                self.fenetre.blit(surface_texte, (x, y))
                 self.jeu.afficher(self.fenetre,self.tmx_data)
                 
 

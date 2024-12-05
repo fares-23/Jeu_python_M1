@@ -1,17 +1,17 @@
 import pygame
 from constante import *
 import sys
-
+from bandeau_inferieur import BandeauInferieur
 
 class Personnage:
     
     def __init__(self, x, y):
         #variables de personnage
-        self.couleur_perso = (255, 0, 0)
-        self.attaque = 0
-        self.defense = 0
-        self.pv = 0
-        self.vitesse = 3
+
+        self.attaque = None
+        self.defense = None
+        self.pv = None
+        self.vitesse = None
         
         self.royaume = None
         
@@ -23,6 +23,8 @@ class Personnage:
         
         self.image_path = None
         
+        self.bandeau = BandeauInferieur()
+        
     def afficher_deplacement(self, grille,fenetre,coordonnee):
         if self.afficher_deplacement_possible:
             for ligne in grille:
@@ -33,7 +35,9 @@ class Personnage:
                         pass
                     elif abs(dx) + abs(dy) <= self.vitesse:
                         pygame.draw.rect(fenetre, ROUGE, case, 1)
-                        
+                        self.bandeau.afficher_personnage(fenetre,self.image_path,self.pv)
+
+
     def afficher_personnage(self, fenetre):
         image = pygame.image.load(self.image_path).convert_alpha()
         image = pygame.transform.smoothscale(image, (TAILLE_CASE, TAILLE_CASE))

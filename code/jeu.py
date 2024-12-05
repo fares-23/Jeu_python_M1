@@ -22,10 +22,11 @@ class Jeu:
 
     def afficher(self, fenetre, tmx_data):
         self.grille.afficher(fenetre,tmx_data)
+        self.__bandeau.afficher(fenetre)
         for i in range(len(self.__liste_personnage)):
             self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees())
             self.__liste_personnage[i].afficher_personnage(fenetre)
-            self.__bandeau.afficher(fenetre)
+            
         
     def verifier_clic(self, event,liste_royaume):
         coordonnee = []
@@ -48,6 +49,7 @@ class Jeu:
             for i in range(len(self.__liste_personnage)):
                 self.__liste_personnage[i].action = True
         
+            
     @property
     def liste_personnage(self):
         return self.__liste_personnage

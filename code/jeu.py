@@ -20,9 +20,11 @@ class Jeu:
         self.__next_tour = False
         self.__bandeau = BandeauInferieur()
 
+
     def afficher(self, fenetre, tmx_data):
         self.grille.afficher(fenetre,tmx_data)
         self.__bandeau.afficher(fenetre)
+        self.__bandeau.afficher_tour(fenetre,self.tour)
         for i in range(len(self.__liste_personnage)):
             self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees())
             self.__liste_personnage[i].afficher_personnage(fenetre)

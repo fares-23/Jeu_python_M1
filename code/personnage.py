@@ -35,7 +35,7 @@ class Personnage:
                         pass
                     elif abs(dx) + abs(dy) <= self.vitesse:
                         pygame.draw.rect(fenetre, ROUGE, case, 1)
-                        self.bandeau.afficher_personnage(fenetre,self.image_path,self.pv)
+                        self.bandeau.afficher_personnage(fenetre,self.image_path,self.pv,self.attaque,self.defense)
 
 
     def afficher_personnage(self, fenetre):
@@ -82,3 +82,5 @@ class Personnage:
         
     def get_coordonnees(self):
         return (self.rect.x, self.rect.y)
+    
+    

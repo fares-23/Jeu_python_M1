@@ -19,20 +19,19 @@ class Grille:
         self.hauteur = taille_y * TAILLE_CASE
 
     def afficher(self, fenetre, tmx_data):
-        # Vérification du chargement des tuiles
-        #rint("Affichage des tuiles:")
+        # Afficher les tuiles du fichier TMX
         for layer in tmx_data.visible_layers:
             if hasattr(layer, "tiles"):
                 for x, y, tile in layer.tiles():
-                    # Vérifiez si la tuile est valide
-                    if tile:
-                        #print(f"Tuile à la position ({x}, {y})")
+                    if tile:  # Vérifie que la tuile existe
                         fenetre.blit(tile, (x * TAILLE_CASE + self.offset_x, y * TAILLE_CASE + self.offset_y))
-                    else:
-                        pass
-        # Dessiner les cases de la grille
+
+        # Dessiner une grille transparente sur la fenêtre
+        surface = pygame.Surface(fenetre.get_size(), pygame.SRCALPHA)  # Surface avec canal alpha
+        TRANSPARENT = (255, 255, 255, 0)  # Couleur blanche avec opacité de 50
         for ligne in self.cases:
             for case in ligne:
-                pygame.draw.rect(fenetre, COULEUR_GRILLE, case, 1)
+                pygame.draw.rect(surface, TRANSPARENT, case, 1)  # Dessine la grille sur la surface
+        fenetre.blit(surface, (0, 0))  # Affiche la surface transparente sur la fenêtre
 
  

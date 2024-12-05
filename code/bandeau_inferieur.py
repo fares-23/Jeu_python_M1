@@ -31,4 +31,4 @@ class BandeauInferieur:
 
     def afficher_tour(self,fenetre,tour):
         tour_text = self.font.render(f"Tour : {tour}", True, (0, 0, 0))
-        fenetre.blit(tour_text, (1100, 725))
+        fenetre.blit(tour_text, (1100, 735))

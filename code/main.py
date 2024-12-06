@@ -30,7 +30,7 @@ class Main:
             print(f"Erreur lors du chargement de la carte : {e}")
             pygame.quit()
             sys.exit()
-    
+     
 
         # Créer une instance de Grille pour gérer les cases
         self.grille = Grille(taille_x=120, taille_y=120, x=0, y=0)

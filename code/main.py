@@ -1,3 +1,4 @@
+ 
 import pygame
 import sys
 from pytmx import load_pygame
@@ -7,47 +8,43 @@ from menu import Menu
 from bouton import Bouton
 from jeu import Jeu
 from selection import Selection
+from carte import Carte
 
-
-class Main: 
+class Main:
     pygame.init()
+   # musique
     
-    #musique
-    
-    # pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
-    # pygame.mixer.music.play(start=0.0, fade_ms=5000)
-    # pygame.mixer.music.set_volume(0.5)
-    
+    #pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
+    #pygame.mixer.music.play(start=0.0, fade_ms=5000)
+    pygame.mixer.music.set_volume(0.5)
+
     def __init__(self):
         # Initialisation de la fenêtre Pygame
         self.fenetre = pygame.display.set_mode(RESOLUTION_JEU)
         pygame.display.set_caption("Jeu avec Tiled")
 
-        # Charger la carte TMX
+        # Initialisation de la carte
         try:
-            self.tmx_data = load_pygame("map2.tmx")
-            print("Carte TMX chargée avec succès")
+            self.carte = Carte("map2.tmx", offset_x=0, offset_y=0)
         except Exception as e:
             print(f"Erreur lors du chargement de la carte : {e}")
             pygame.quit()
-            sys.exit()
-     
-
+            sys.exit() 
+            
         # Créer une instance de Grille pour gérer les cases
         self.grille = Grille(taille_x=120, taille_y=120, x=0, y=0)
         
-        # Initialisation des autres composants du jeu (Menu, Sélection, Jeu)
+        # Initialisation des autres composants
         self.menu = Menu(self.fenetre)
         self.selection = Selection(self.fenetre)
         self.jeu = Jeu()
-        self.fond = pygame.image.load("assets/interface/main_menu_background.jpg")  # Remplacez par le chemin vers votre image
-        self.fond = pygame.transform.scale(self.fond, RESOLUTION_JEU)  # Redimensionnez l'image en fonction de la taille de la fenêtre
-        
-        # Initialisation de l'état du jeu (menu au départ)
-        self.etat = "menu"
-        
-    def boucle_principale(self):
+        self.fond = pygame.image.load("assets/interface/main_menu_background.jpg")
+        self.fond = pygame.transform.scale(self.fond, RESOLUTION_JEU)
 
+        # État initial
+        self.etat = "menu"
+
+    def boucle_principale(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -63,17 +60,16 @@ class Main:
                     elif self.etat == "selection":
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
-                        self.jeu.verifier_clic(event,self.selection.liste_royaume)
-                        
+                        self.jeu.verifier_clic(event, self.selection.liste_royaume)
+
             self.jeu.liste_personnage = self.selection.liste_troupe
 
+         
             # Remplir l'écran avec une couleur de fond
             #self.fenetre.fill(BLANC)  # Fond blanc pour vérifier l'affichage
             self.fenetre.blit(self.fond,(0, 0))  # Dessinez l'image de fond
             # Afficher la carte TMX à l'écran (utilisation de Grille pour la gestion des cases)
             
-            
-
             # Afficher le contenu en fonction de l'état actuel du jeu
             if self.etat == "menu":
                 self.menu.afficher()
@@ -81,16 +77,18 @@ class Main:
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
-                self.jeu.afficher(self.fenetre,self.tmx_data)
+                self.carte.afficher(self.fenetre)  # Affiche la carte
+                self.jeu.afficher(self.fenetre, self.carte.tmx_data)
 
-            # Mettre à jour l'affichage à chaque itération
+             # Mettre à jour l'affichage à chaque itération
             pygame.display.flip()
             pygame.display.update()
 
             # Limiter la boucle à 60 FPS
             pygame.time.Clock().tick(60)
 
-
+ 
 if __name__ == "__main__":
     start = Main()
     start.boucle_principale()
+

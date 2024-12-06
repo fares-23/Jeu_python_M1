@@ -13,10 +13,11 @@ class Main:
     pygame.init()
     
     #musique
-    #pygame.mixer.init()
-    #pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
-    #pygame.mixer.music.play(loops=-1,start=0.0, fade_ms=5000)
-
+    
+    pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
+    pygame.mixer.music.play(start=0.0, fade_ms=5000)
+    pygame.mixer.music.set_volume(0.5)
+    
     def __init__(self):
         # Initialisation de la fenêtre Pygame
         self.fenetre = pygame.display.set_mode(RESOLUTION_JEU)
@@ -81,7 +82,6 @@ class Main:
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
                 self.jeu.afficher(self.fenetre,self.tmx_data)
-                
 
             # Mettre à jour l'affichage à chaque itération
             pygame.display.flip()

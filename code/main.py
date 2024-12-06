@@ -14,9 +14,9 @@ class Main:
     
     #musique
     
-    pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
-    pygame.mixer.music.play(start=0.0, fade_ms=5000)
-    pygame.mixer.music.set_volume(0.5)
+    # pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
+    # pygame.mixer.music.play(start=0.0, fade_ms=5000)
+    # pygame.mixer.music.set_volume(0.5)
     
     def __init__(self):
         # Initialisation de la fenêtre Pygame

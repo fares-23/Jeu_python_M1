@@ -30,5 +30,5 @@ class BandeauInferieur:
         fenetre.blit(defense_text, (90, 753))
 
     def afficher_tour(self,fenetre,tour):
-        tour_text = self.font.render(f"Tour : {tour}", True, (0, 0, 0))
-        fenetre.blit(tour_text, (1100, 735))
+        tour_text = self.font.render(f"Tour du joueur  : {(tour%2)+1}", True, (0, 0, 0))
+        fenetre.blit(tour_text, (1000, 735))

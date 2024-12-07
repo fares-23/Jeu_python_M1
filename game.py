@@ -1,316 +1,250 @@
 import pygame
-from archer import Archer
+import sys
+import random
 from chevalier import Chevalier
+from archer import Archer
 from mage import Mage
 from grille import Grille
+from bandeau_inferieur import BandeauInferieur
+from carte import Carte
 from constante import *
-import sys
 
 # Initialisation de Pygame
 pygame.init()
 
-# Définition des dimensions de la fenêtre
-fenetre = pygame.display.set_mode(RESOLUTION)
+class Game:
+    def __init__(self):
+        # Création de la fenêtre
+        self.fenetre = pygame.display.set_mode(RESOLUTION_JEU)
+        pygame.display.set_caption("Jeu de Tactique Tour par Tour")
 
-# Création de la grille
-grille = Grille(TAILLE_GRILLE, fenetre)
+        # Création de la grille
+        taille_x = RESOLUTION[0] // TAILLE_CASE
+        taille_y = RESOLUTION[1] // TAILLE_CASE
+        self.grille = Grille(taille_x, taille_y, 0, 0)
 
-# Création des personnages
-archer = Archer(2 * TAILLE_CASE, 2 * TAILLE_CASE, (255, 0, 0))  # Rouge
-mage = Mage(5 * TAILLE_CASE, 5 * TAILLE_CASE, (0, 255, 0))  # Vert
-chevalier = Chevalier(8 * TAILLE_CASE, 8 * TAILLE_CASE, (0, 0, 255))  # Bleu
+        # Création de la carte
+        self.carte = Carte("map2.tmx")  # Assurez-vous que "map2.tmx" est un fichier TMX valide
 
-# Liste des personnages
-liste_personnage = [archer, mage, chevalier]
+        # Initialisation du bandeau inférieur
+        self.bandeau = BandeauInferieur()
 
-# Variable pour garder le personnage sélectionné
-personnage_selectionne = None  # Aucun personnage sélectionné par défaut
+        # Création des personnages
+        self.archer = Archer(2 * TAILLE_CASE, 2 * TAILLE_CASE, "Empire Adrastien")
+        self.mage = Mage(5 * TAILLE_CASE, 5 * TAILLE_CASE, "Empire Adrastien")
+        self.chevalier = Chevalier(8 * TAILLE_CASE, 8 * TAILLE_CASE, "Empire Adrastien")
 
-# Fonction pour gérer le choix d'une cible
-def choisir_cible(attacker, personnages):
-    """Retourne une cible valide pour l'attaquant."""
-    cibles = [p for p in personnages if p != attacker and p.pv > 0]
-    if cibles:
-        return cibles[0]  # Retourne la première cible valide
-    return None
+        # Liste des personnages
+        self.liste_personnages = [self.archer, self.mage, self.chevalier]
 
-# Boucle principale
-while True:
-    fenetre.fill((255, 255, 255))  # Fond blanc
+        # Variables de jeu
+        self.personnage_selectionne = None
+        self.tour = 0
+        self.jeu_en_cours = True
 
-    # Affichage de la grille
-    grille.afficher()
+    def afficher(self):
+        """Affiche la carte, la grille, les personnages et le bandeau."""
+        self.fenetre.fill(BLANC)  # Fond blanc
 
-    # Affichage des personnages
-    for personnage in liste_personnage:
-        personnage.afficher_personnage(fenetre)
+        # Afficher la carte
+        self.carte.afficher(self.fenetre)
 
-        # Affichage des PV au-dessus du personnage
-        font = pygame.font.SysFont(None, 24)
-        pv_text = font.render(f"PV: {personnage.pv}", True, (0, 0, 0))
-        fenetre.blit(pv_text, (personnage.rect.x, personnage.rect.y - 20))
+        # Afficher la grille
+        self.grille.afficher(self.fenetre)
 
-    pygame.display.update()
+        # Afficher les personnages
+        for personnage in self.liste_personnages:
+            personnage.afficher_personnage(self.fenetre)
 
-    # Gestion des événements
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            # Afficher les PV au-dessus du personnage
+            font = pygame.font.SysFont(None, 24)
+            pv_text = font.render(f"PV: {personnage.pv}", True, NOIR)
+            self.fenetre.blit(pv_text, (personnage.rect.x + TAILLE_CASE // 4, personnage.rect.y - 20))
 
-        # Détection d'un clic gauche pour sélectionner un personnage
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Clic gauche
-            mouse_pos = pygame.mouse.get_pos()
-            for personnage in liste_personnage:
-                if personnage.rect.collidepoint(mouse_pos):  # Vérifie si le clic est sur un personnage
-                    personnage_selectionne = personnage  # Change le personnage sélectionné
-                    print(f"{personnage.__class__.__name__} sélectionné !")
+        # Afficher le bandeau inférieur
+        self.bandeau.afficher(self.fenetre)
+        if self.personnage_selectionne:
+            self.bandeau.afficher_personnage(self.fenetre, self.personnage_selectionne.image_path,
+                                             self.personnage_selectionne.pv, self.personnage_selectionne.attaque,
+                                             self.personnage_selectionne.defense)
+            self.bandeau.afficher_tour(self.fenetre, self.tour)
 
-        # Si un personnage est sélectionné, gestion des actions
-        if personnage_selectionne:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:  # Fin du tour
-                    personnage_selectionne = None  # Désélectionne le personnage
-                    print("Fin du tour. Aucun personnage sélectionné.")
+    def verifier_clic(self, event):
+        """Gère les clics pour sélectionner un personnage."""
+        mouse_pos = pygame.mouse.get_pos()
+        for personnage in self.liste_personnages:
+            if personnage.rect.collidepoint(mouse_pos):
+                self.personnage_selectionne = personnage
+                print(f"{personnage.__class__.__name__} sélectionné !")
+                return
 
-                elif event.key == pygame.K_SPACE:  # Activer une compétence
-                    cible = choisir_cible(personnage_selectionne, liste_personnage)
-                    if cible:
-                        if isinstance(personnage_selectionne, Archer):
-                            print("1. Tir Précis  2. Tir Empoisonné  3. Pluie de Flèches  4. Tir Rapide")
-                            choix = input("Choisissez une compétence : ")
-                            if choix == "1":
-                                degats = personnage_selectionne.attaque - cible.defense
+    def gerer_touches(self, event):
+        """Gère les actions liées aux touches."""
+        if event.key == pygame.K_RETURN:  # Fin du tour
+            self.personnage_selectionne = None
+            self.tour += 1
+            print(f"Fin du tour {self.tour}. Tour du joueur suivant.")
+
+        elif self.personnage_selectionne:
+            # Compétences du personnage sélectionné
+            cible = self.choisir_cible(self.personnage_selectionne)
+            if cible:
+                # Vérification de l'esquive de la cible
+                if random.random() > cible.esquive:  # Si l'attaque n'est pas esquivée
+                    if isinstance(self.personnage_selectionne, Archer):
+                        print("1. Tir Précis  2. Tir Empoisonné  3. Pluie de Flèches  4. Tir Rapide")
+                        choix = input("Choisissez une compétence : ")
+                        if choix == "1":
+                            degats = max(0, self.personnage_selectionne.attaque - cible.defense)
+                            cible.recevoir_attaque(degats)
+                            print(f"{self.personnage_selectionne.__class__.__name__} inflige {degats} dégâts avec Tir Précis.")
+                        elif choix == "2":
+                            degats = max(0, self.personnage_selectionne.attaque - cible.defense)
+                            cible.recevoir_attaque(degats)
+                            cible.etat = "empoisonné"
+                            print(f"{cible.__class__.__name__} est maintenant empoisonné !")
+                        elif choix == "3":
+                            autres_cibles = [p for p in self.liste_personnages if p != self.personnage_selectionne]
+                            for autre_cible in autres_cibles:
+                                degats = max(5, self.personnage_selectionne.attaque // 2 - autre_cible.defense)
+                                autre_cible.recevoir_attaque(degats)
+                                print(f"{autre_cible.__class__.__name__} perd {degats} PV.")
+                        elif choix == "4":
+                            for _ in range(2):
+                                degats = max(0, self.personnage_selectionne.attaque - cible.defense)
                                 cible.recevoir_attaque(degats)
-                            elif choix == "2":
-                                degats = personnage_selectionne.attaque - cible.defense
-                                cible.recevoir_attaque(degats)
-                                cible.etat = "empoisonné"
-                                print(f"{cible.__class__.__name__} est maintenant empoisonné !")
-                            elif choix == "3":
-                                autres_cibles = [p for p in liste_personnage if p != personnage_selectionne]
-                                for autre_cible in autres_cibles:
-                                    degats = max(5, personnage_selectionne.attaque // 2 - autre_cible.defense)
-                                    autre_cible.recevoir_attaque(degats)
-                            elif choix == "4":
-                                for _ in range(2):  # Deux attaques rapides
-                                    degats = personnage_selectionne.attaque - cible.defense
-                                    cible.recevoir_attaque(degats)
+                                print(f"{self.personnage_selectionne.__class__.__name__} inflige {degats} dégâts avec Tir Rapide.")
 
-                        elif isinstance(personnage_selectionne, Mage):
-                            print("1. Boule de Feu  2. Soin  3. Explosion Magique  4. Téléportation")
-                            choix = input("Choisissez une compétence : ")
-                            if choix == "1":
-                                degats = personnage_selectionne.attaque * 2 - cible.defense
-                                cible.recevoir_attaque(degats)
-                            elif choix == "2":
-                                personnage_selectionne.soigner(personnage_selectionne)
-                            elif choix == "3":
-                                for autre_cible in liste_personnage:
-                                    degats = personnage_selectionne.attaque * 1.5 - autre_cible.defense
-                                    autre_cible.recevoir_attaque(degats)
-                            elif choix == "4":
-                                x, y = map(int, input("Entrez les nouvelles coordonnées x, y : ").split(","))
-                                personnage_selectionne.teleportation(x, y)
+                    elif isinstance(self.personnage_selectionne, Mage):
+                        print("1. Boule de Feu  2. Soin  3. Explosion Magique  4. Téléportation")
+                        choix = input("Choisissez une compétence : ")
+                        if choix == "1":
+                            degats = max(0, (self.personnage_selectionne.attaque * 2) - cible.defense)
+                            cible.recevoir_attaque(degats)
+                            print(f"{self.personnage_selectionne.__class__.__name__} inflige {degats} dégâts avec Boule de Feu.")
+                        elif choix == "2":
+                            self.personnage_selectionne.soigner(self.personnage_selectionne)
+                            print(f"{self.personnage_selectionne.__class__.__name__} soigne {self.personnage_selectionne.__class__.__name__}.")
+                        elif choix == "3":
+                            autres_cibles = [p for p in self.liste_personnages if p != self.personnage_selectionne]
+                            for autre_cible in autres_cibles:
+                                degats = max(0, (self.personnage_selectionne.attaque * 1.5) - autre_cible.defense)
+                                autre_cible.recevoir_attaque(degats)
+                                print(f"{autre_cible.__class__.__name__} perd {degats} PV.")
+                        elif choix == "4":
+                            x, y = map(int, input("Entrez les nouvelles coordonnées x, y : ").split(","))
+                            self.personnage_selectionne.teleportation(x, y)
+                            print(f"{self.personnage_selectionne.__class__.__name__} se téléporte à ({x}, {y}).")
 
-                        elif isinstance(personnage_selectionne, Chevalier):
-                            print("1. Coup Puissant  2. Protection  3. Bouclier Divin  4. Frappe de Zone")
-                            choix = input("Choisissez une compétence : ")
-                            if choix == "1":
-                                degats = personnage_selectionne.attaque * 1.5 - cible.defense
-                                cible.recevoir_attaque(degats)
-                            elif choix == "2":
-                                for autre_personnage in liste_personnage:
-                                    autre_personnage.defense += 5
-                                    print(f"La défense de {autre_personnage.__class__.__name__} augmente temporairement.")
-                            elif choix == "3":
-                                print(f"{personnage_selectionne.__class__.__name__} devient invincible pour ce tour !")
-                            elif choix == "4":
-                                autres_cibles = [p for p in liste_personnage if p != personnage_selectionne]
-                                for autre_cible in autres_cibles:
-                                    degats = max(10, personnage_selectionne.attaque - autre_cible.defense)
-                                    autre_cible.recevoir_attaque(degats)
+                    elif isinstance(self.personnage_selectionne, Chevalier):
+                        print("1. Coup Puissant  2. Protection  3. Bouclier Divin  4. Frappe de Zone")
+                        choix = input("Choisissez une compétence : ")
+                        if choix == "1":
+                            degats = max(0, (self.personnage_selectionne.attaque * 1.5) - cible.defense)
+                            cible.recevoir_attaque(degats)
+                            print(f"{self.personnage_selectionne.__class__.__name__} inflige {degats} dégâts avec Coup Puissant.")
+                        elif choix == "2":
+                            allies = [p for p in self.liste_personnages if p != self.personnage_selectionne]
+                            self.personnage_selectionne.protection(allies)
+                            print(f"{self.personnage_selectionne.__class__.__name__} utilise Protection.")
+                        elif choix == "3":
+                            self.personnage_selectionne.bouclier_divin()
+                            print(f"{self.personnage_selectionne.__class__.__name__} utilise Bouclier Divin.")
+                        elif choix == "4":
+                            autres_cibles = [p for p in self.liste_personnages if p != self.personnage_selectionne]
+                            for autre_cible in autres_cibles:
+                                degats = max(10, self.personnage_selectionne.attaque - autre_cible.defense)
+                                autre_cible.recevoir_attaque(degats)
+                                print(f"{autre_cible.__class__.__name__} perd {degats} PV.")
+                else:
+                    print(f"{cible.__class__.__name__} esquive l'attaque !")
 
-                # Déplacement via le clavier
-                elif event.key == pygame.K_UP:  # Vers le haut
-                    personnage_selectionne.rect.y -= TAILLE_CASE
-                elif event.key == pygame.K_DOWN:  # Vers le bas
-                    personnage_selectionne.rect.y += TAILLE_CASE
-                elif event.key == pygame.K_LEFT:  # À gauche
-                    personnage_selectionne.rect.x -= TAILLE_CASE
-                elif event.key == pygame.K_RIGHT:  # À droite
-                    personnage_selectionne.rect.x += TAILLE_CASE
+            # Déplacements avec les touches fléchées
+            if event.key == pygame.K_UP:
+                self.personnage_selectionne.rect.y -= TAILLE_CASE
+            elif event.key == pygame.K_DOWN:
+                self.personnage_selectionne.rect.y += TAILLE_CASE
+            elif event.key == pygame.K_LEFT:
+                self.personnage_selectionne.rect.x -= TAILLE_CASE
+            elif event.key == pygame.K_RIGHT:
+                self.personnage_selectionne.rect.x += TAILLE_CASE
 
-    # Vérification des PV et fin de partie
-    liste_personnage = [p for p in liste_personnage if p.pv > 0]
-    if len(liste_personnage) == 1:
-        print(f"Le gagnant est {liste_personnage[0].__class__.__name__}!")
-        pygame.quit()
-        sys.exit()
-<<<<<<< HEAD
-""" 
-1. Lancement du jeu
-Initialisation :
+    def choisir_cible(self, attacker):
+        """Retourne une cible ennemie la plus proche de l'attaquant."""
+        cibles = [p for p in self.liste_personnages if p != attacker and p.pv > 0]
+        if not cibles:
+            return None
 
-Le jeu se lance avec une fenêtre affichant une grille de cases et les personnages placés à des positions fixes.
-Chaque personnage a des statistiques spécifiques (PV, défense, vitesse, etc.) et des compétences uniques.
-Objectif :
+        # Trouve la cible la plus proche
+        cible_la_plus_proche = min(cibles, key=lambda cible: abs(attacker.rect.x - cible.rect.x) + abs(attacker.rect.y - cible.rect.y))
+        return cible_la_plus_proche
 
-Rester le dernier personnage vivant en utilisant des attaques, des compétences, et des stratégies de déplacement.
-2. Sélection d’un personnage
-Cliquez sur un personnage avec le bouton gauche de la souris pour le sélectionner.
-Une fois sélectionné :
-Vous pouvez le déplacer sur la grille.
-Vous pouvez utiliser ses compétences pour attaquer ou se protéger.
-3. Déplacement
-Touches directionnelles (↑, ↓, ←, →) :
-Ces touches permettent de déplacer le personnage actif d'une case dans la direction choisie.
-Chaque personnage a une vitesse qui détermine combien de cases il peut se déplacer en un tour.
-4. Utilisation des compétences
-Appuyez sur SPACE :
-Les compétences disponibles pour le personnage sélectionné s'affichent dans la console.
-Entrez le numéro correspondant à la compétence que vous voulez utiliser (ex. : 1 pour la première compétence).
-Les compétences peuvent :
-Attaquer un adversaire.
-Affecter plusieurs adversaires en zone.
-Soigner des alliés ou le personnage lui-même.
-Appliquer des effets spéciaux comme l’empoisonnement ou l’invincibilité.
-5. Attaque et Esquive
-Lorsqu’une attaque est effectuée :
-Calcul des dégâts :
-Les dégâts sont basés sur les statistiques d'attaque et de défense du personnage.
-Esquive :
-Avant d'infliger les dégâts, la cible a une chance d'esquiver l'attaque.
-Si l’esquive réussit, aucun dégât n’est infligé :
-python
-if random.random() < cible.esquive:
-    print(f"{cible.__class__.__name__} esquive l'attaque !")
-Si l’esquive échoue, les PV sont réduits.
-6. Fin du tour
-Appuyez sur RETURN pour terminer le tour.
-Cela permet de désélectionner le personnage actif et de passer à une nouvelle action.
-7. Vérification des PV
-Après chaque tour :
-Les personnages ayant 0 PV ou moins sont éliminés.
-S’il ne reste qu’un personnage vivant, il est déclaré gagnant :
-python
-if len(liste_personnage) == 1:
-    print(f"Le gagnant est {liste_personnage[0].__class__.__name__}!")
-8. Compétences des personnages
-Archer (Rouge) :
-Tir Précis : Inflige des dégâts directs à une cible unique.
-Tir Empoisonné : Inflige des dégâts et empoisonne la cible.
-Pluie de Flèches : Attaque tous les adversaires dans une zone.
-Tir Rapide : Tire deux fois rapidement sur une cible.
-Mage (Vert) :
-Boule de Feu : Inflige des dégâts massifs à une cible.
-Soin : Restaure des PV à lui-même ou à un allié.
-Explosion Magique : Attaque tous les ennemis à la fois.
-Téléportation : Déplace instantanément le Mage à une position de la grille.
-Chevalier (Bleu) :
-Coup Puissant : Inflige de gros dégâts à une cible unique.
-Protection : Augmente temporairement la défense des alliés.
-Bouclier Divin : Rend le Chevalier invincible pour un tour.
-Frappe de Zone : Attaque tous les ennemis autour de lui.
-=======
+    def verifier_fin_de_jeu(self):
+        """Vérifie si le jeu est terminé."""
+        survivants = [p for p in self.liste_personnages if p.pv > 0]
+        if len(survivants) == 1:
+            print(f"Le gagnant est {survivants[0].__class__.__name__}!")
+            self.jeu_en_cours = False
 
+    def boucle_principale(self):
+        """Boucle principale du jeu."""
+        while self.jeu_en_cours:
+            self.afficher()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    self.verifier_clic(event)
+
+                elif event.type == pygame.KEYDOWN:
+                    self.gerer_touches(event)
+
+            self.verifier_fin_de_jeu()
+
+            pygame.display.flip()
+            pygame.time.Clock().tick(60)
+
+if __name__ == "__main__":
+    jeu = Game()
+    jeu.boucle_principale()
 """
-Pygame démarre :
-
-La bibliothèque Pygame initialise l'interface graphique.
-Une fenêtre est créée pour afficher la grille et les personnages.
-Création de la grille et des personnages :
-
-La grille représente le terrain de jeu, divisé en cases.
-Trois personnages (Archer, Mage, Chevalier) sont placés sur la grille à des positions prédéfinies. Chaque personnage a :
-Une couleur pour le distinguer.
-Des points de vie (PV).
-Des compétences uniques.
-Variables de gestion :
-
-Une liste liste_personnage contient les trois personnages.
-Une variable personnage_selectionne est utilisée pour garder une référence au personnage actuellement sélectionné.
-2. Affichage
-À chaque tour, la fenêtre est mise à jour :
-Grille : La grille est affichée en arrière-plan.
-Personnages : Les personnages sont affichés sur leurs positions actuelles.
-Points de vie : Les PV de chaque personnage sont affichés au-dessus de lui.
-3. Sélection des Personnages
-Clic gauche : Lorsque l'utilisateur clique sur un personnage, ce personnage devient le personnage actif (sélectionné).
-Cela est détecté avec la fonction collidepoint, qui vérifie si le clic de la souris se trouve sur le personnage.
-La sélection est indiquée dans la console par un message comme Archer sélectionné !.
-4. Actions du Personnage Sélectionné
-Une fois un personnage sélectionné, l'utilisateur peut effectuer différentes actions :
-
-a. Déplacement
-Utilisez les flèches directionnelles pour déplacer le personnage sur la grille :
-UP : Déplace vers le haut.
-DOWN : Déplace vers le bas.
-LEFT : Déplace à gauche.
-RIGHT : Déplace à droite.
-La position est mise à jour en ajustant les coordonnées du rectangle rect du personnage.
-b. Compétences
-Appuyez sur SPACE pour activer une compétence :
-Le programme demande à l'utilisateur de choisir une compétence via la console.
-Une cible est automatiquement sélectionnée (le premier ennemi valide avec des PV > 0).
-En fonction de la compétence choisie, le personnage effectue une action, comme :
-Infliger des dégâts à une cible.
-Soigner un allié.
-Effectuer une attaque de zone.
-Se téléporter.
-c. Fin du Tour
-Appuyez sur RETURN pour terminer le tour.
-Le personnage sélectionné est désélectionné.
-Le joueur peut cliquer sur un autre personnage pour commencer un nouveau tour.
-5. Gestion des PV et Fin de Partie
-Mise à jour des PV :
-
-Les personnages qui ont 0 PV ou moins sont retirés de liste_personnage.
-Leurs points de vie sont affichés en temps réel au-dessus d'eux.
-Fin du jeu :
-
-Lorsque la liste liste_personnage ne contient qu’un seul personnage, le jeu se termine.
-Le personnage restant est déclaré vainqueur, et le programme affiche son type (ex. : Le gagnant est Archer !).
-"""
-
-""" 
-. Lancement du Jeu
-Initialisation : Lorsque vous exécutez le programme (python jeu.py), Pygame s'initialise et une fenêtre de jeu s'ouvre, affichant la grille sur laquelle les personnages se déplacent.
-Affichage de la grille : La grille est dessinée sur l'écran, servant de terrain de jeu pour les personnages.
-2. Présentation des Personnages
-Trois types de personnages sont disponibles :
-Archer : Un personnage avec des attaques à distance et des compétences comme le "Tir Précis" et la "Pluie de Flèches".
-Mage : Un personnage qui utilise des compétences magiques telles que la "Boule de Feu" et le "Soin".
-Chevalier : Un personnage de mêlée qui peut utiliser des compétences de protection et de zone, comme le "Coup Puissant" et la "Frappe de Zone".
-Chaque personnage a une couleur différente pour le distinguer facilement :
-Archer : Rouge
-Mage : Vert
-Chevalier : Bleu
-3. Tour de Jeu
-Gestion des tours : Le jeu est structuré en tours. Un joueur actif prend son tour pour déplacer son personnage, choisir une cible et utiliser des compétences.
-Changement de tour : Lorsque le joueur appuie sur RETURN, le programme passe au joueur suivant en mettant à jour la variable joueur_actuel, qui pointe vers le prochain personnage de la liste.
-4. Interaction avec les Personnages
+1. Démarrage et configuration
+Lorsque le programme est lancé, Pygame est initialisé, et la fenêtre de jeu est créée.
+La grille de jeu est configurée pour afficher le terrain, et la carte est chargée pour afficher l'environnement du jeu.
+Les personnages (Archer, Mage, Chevalier) sont créés et placés sur la carte.
+2. Affichage des éléments du jeu
+La méthode afficher() est appelée à chaque boucle de jeu pour afficher :
+La carte (en utilisant la classe Carte).
+La grille (utilisant la classe Grille).
+Les personnages (affichés à l'aide de leur méthode afficher_personnage()).
+Un bandeau inférieur qui affiche des informations sur le personnage sélectionné (utilisant la classe BandeauInferieur).
+3. Interaction avec les personnages
+Sélection d'un personnage :
+Lorsque le joueur clique sur un personnage avec la souris, la méthode verifier_clic() détecte le clic et sélectionne le personnage.
+Le personnage sélectionné est mis en surbrillance, et ses détails apparaissent sur le bandeau inférieur.
 Déplacement :
-
-Utilisez les touches directionnelles (UP, DOWN, LEFT, RIGHT) pour déplacer le personnage actif sur la grille.
-Un clic gauche de la souris est également utilisé pour déplacer le personnage vers une case cliquée, en appelant la méthode grille.deplacer_personnage().
-Utilisation des compétences :
-
-Lorsqu'une touche SPACE est pressée, le programme affiche les compétences disponibles pour le personnage actif dans la console.
-L'utilisateur choisit une compétence en entrant un numéro (ex. : "1" pour "Tir Précis") et appuie sur ENTER.
-Le programme exécute la compétence choisie sur une cible. Si une compétence nécessite des coordonnées (comme la téléportation du Mage), l'utilisateur doit entrer ces coordonnées via input.
-5. Sélection de la Cible
-Cible automatique : La fonction choisir_cible() sélectionne automatiquement la première cible valide (un autre personnage ayant encore des PV).
-Clic pour sélectionner la cible : Si le programme est configuré pour permettre la sélection par clic, le joueur peut cliquer sur un personnage pour le sélectionner comme cible.
-Affichage des options de compétence : Après la sélection de la cible, l'utilisateur choisit la compétence à utiliser, ce qui déclenche l'effet de la compétence.
-6. Affichage des Points de Vie (PV)
-Affichage des PV : Les points de vie de chaque personnage sont affichés au-dessus de leur position sur la grille. Cela permet de suivre l'état de santé de chaque personnage.
-7. Exécution des Compétences
+Le joueur peut déplacer le personnage sélectionné en utilisant les touches fléchées (K_UP, K_DOWN, K_LEFT, K_RIGHT). Le personnage se déplace d'une case dans la direction choisie.
+Utilisation de compétences :
+Lorsqu'un personnage est sélectionné, le joueur appuie sur la touche Espace pour accéder au menu des compétences disponibles.
+Le joueur choisit une compétence en entrant un numéro, et la compétence est exécutée. Certaines compétences infligent des dégâts, tandis que d'autres ont des effets de soutien (comme le soin).
+Les attaques prennent en compte l'attribut esquive de la cible. Si l'attaque est esquivée (basée sur une probabilité aléatoire), l'attaque est annulée, sinon elle inflige des dégâts.
+4. Mécanismes de jeu
 Compétences des personnages :
-Les compétences des personnages sont définies dans les classes Archer, Mage, et Chevalier. Par exemple, l'Archer peut utiliser le "Tir Précis" pour infliger des dégâts directs, tandis que le Mage peut utiliser la "Boule de Feu" pour attaquer à distance.
-Effets des compétences : Selon la compétence choisie, des effets différents sont appliqués, comme réduire les PV d'une cible, soigner un allié ou changer de position sur la grille (téléportation).
-8. Fin de Partie
-Vérification des PV : À chaque tour, le programme vérifie si des personnages ont des PV <= 0 et les élimine de la liste des personnages.
-Déclaration du gagnant : Le jeu se termine lorsqu'il ne reste plus qu'un seul personnage en vie, qui est déclaré vainqueur.
->>>>>>> a786aef655e57c984f0b9be2482b4154fd521442
+Chaque personnage a un ensemble de compétences spécifiques :
+Archer : Tir Précis, Tir Empoisonné, Pluie de Flèches, Tir Rapide.
+Mage : Boule de Feu, Soin, Explosion Magique, Téléportation.
+Chevalier : Coup Puissant, Protection, Bouclier Divin, Frappe de Zone.
+Les compétences ont des effets variés, allant de l'infligeant des dégâts à la guérison ou la protection des alliés.
+Vérification de la fin de jeu :
+Le jeu continue jusqu'à ce qu'un seul personnage reste en vie. La méthode verifier_fin_de_jeu() vérifie les PV des personnages et déclare un gagnant lorsque tous les autres sont éliminés.
+5. Sélection de la cible
+La méthode choisir_cible() sélectionne automatiquement la cible la plus proche de l'attaquant, en calculant la distance de Manhattan (somme des différences de coordonnées x et y) entre le personnage sélectionné et les autres personnages en vie.
+6. Esquive
+Lorsqu'une attaque est effectuée, la probabilité d'esquive de la cible est prise en compte. Si un tir est esquivé (random.random() > cible.esquive), l'attaque échoue, et le message "esquive l'attaque" est affiché. Sinon, les dégâts sont appliqués à la cible.
+7. Affichage de la progression
+Les informations sur les PV des personnages sont affichées au-dessus de chaque personnage.
+Le bandeau inférieur affiche des détails sur le personnage sélectionné, et il est mis à jour à chaque tour.
 """

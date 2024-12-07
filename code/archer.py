@@ -10,7 +10,7 @@ class Archer(Personnage):
         self.defense = 5
         self.pv = 100
         self.vitesse = 5  # Vitesse spécifique à l'archer
-        self.esquive = 1
+        self.esquive = 0.3
         self.nom = "archer"
         self.royaume = royaume
         self.action = True

@@ -11,7 +11,8 @@ ROUGE = (255, 0, 0) #chevalier
 VERT = (0, 255, 0) #archer
 BLEU = (0, 0, 255) #mage
 
-COULEUR_GRILLE = NOIR
+
+COULEUR_GRILLE = (255,255,255,0)
 COULEUR_FOND = BLANC  # Définition de la couleur de fond
  
 

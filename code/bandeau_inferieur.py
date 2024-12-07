@@ -32,3 +32,9 @@ class BandeauInferieur:
     def afficher_tour(self,fenetre,tour):
         tour_text = self.font.render(f"Tour du joueur  : {(tour%2)+1}", True, (0, 0, 0))
         fenetre.blit(tour_text, (1000, 735))
+        
+    def afficher_message(self,message,fenetre):
+        self.afficher(fenetre)
+        message_text = self.font.render(f"{message}", True, (0, 0, 0))
+        fenetre.blit(message_text, (200, 735))
+        pygame.display.flip()

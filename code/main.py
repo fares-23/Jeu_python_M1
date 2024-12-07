@@ -54,6 +54,11 @@ class Main:
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         sys.exit()
+                    elif event.key == pygame.K_SPACE and self.jeu.liste_personnage:
+                    # Vérifiez si un personnage est sélectionné
+                        for perso in self.jeu.liste_personnage:
+                            if perso.action and perso.selectionne:
+                                self.jeu.combat(perso,self.fenetre)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.etat == "menu":
                         self.etat = self.menu.verifier_clic(event)
@@ -86,6 +91,9 @@ class Main:
 
             # Limiter la boucle à 60 FPS
             pygame.time.Clock().tick(60)
+            
+            # Rétablir la forme de la souris par défaut
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
  
 if __name__ == "__main__":

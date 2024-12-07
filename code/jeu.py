@@ -5,6 +5,7 @@ from archer import Archer
 from mage import Mage
 from chevalier import Chevalier
 from bandeau_inferieur import BandeauInferieur
+import sys
 
 class Jeu:
     def __init__(self):
@@ -19,7 +20,7 @@ class Jeu:
         self.__tour = 0
         self.__next_tour = False
         self.__bandeau = BandeauInferieur()
-
+        self.__liste_royaume = None
 
     def afficher(self, fenetre, tmx_data):
         self.grille.afficher(fenetre,tmx_data)
@@ -30,15 +31,17 @@ class Jeu:
             self.__liste_personnage[i].afficher_personnage(fenetre)
             
         
-    def verifier_clic(self, event,liste_royaume):
+    def verifier_clic(self, event,liste_royaume=None):
+        self.__liste_royaume = liste_royaume
         coordonnee = []
         for i in range(len(self.__liste_personnage)):
             coordonnee.append(self.__liste_personnage[i].get_coordonnees())
-        
+            
         #gère les déplacements des personnages
         action = []
         for i in range(len(self.__liste_personnage)):
-            if self.__liste_personnage[i].royaume == liste_royaume[self.tour%2]:
+            
+            if self.__liste_personnage[i].royaume == self.__liste_royaume[self.tour%2]:
                 self.__liste_personnage[i].deplacement(self.grille,event,coordonnee)
                 action.append(self.__liste_personnage[i].action)
                 
@@ -50,8 +53,11 @@ class Jeu:
             self.__tour += 1
             for i in range(len(self.__liste_personnage)):
                 self.__liste_personnage[i].action = True
+
         
-            
+ 
+     
+        
     @property
     def liste_personnage(self):
         return self.__liste_personnage
@@ -64,3 +70,32 @@ class Jeu:
     def tour(self):
         return self.__tour
     
+    def combat(self, perso_selectionne, fenetre):
+        # Changer la forme de la souris pour indiquer la sélection
+        pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
+        # Variable pour stocker la cible sélectionnée
+        cible = None
+        self.__bandeau.afficher_message("Selectionner une cible.", fenetre)
+        pygame.display.flip()
+        # Boucle pour attendre la sélection de la cible
+        while cible is None:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    # Vérifier si la cible est un personnage
+                    for perso in self.liste_personnage:
+                        if perso.rect.collidepoint(event.pos) and perso != perso_selectionne and perso.royaume != perso_selectionne.royaume:
+                            cible = perso
+                            self.verifier_clic(event,self.__liste_royaume)
+                            if cible.get_coordonnees() not in perso_selectionne.zone:
+                                self.__bandeau.afficher_message("La cible impossible", fenetre)
+                                pygame.display.flip()
+                                pygame.time.wait(250)
+                                return
+                            perso_selectionne.competence(cible, fenetre)
+                            return
+
+
+

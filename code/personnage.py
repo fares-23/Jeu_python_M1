@@ -2,17 +2,18 @@ import pygame
 from constante import *
 import sys
 from bandeau_inferieur import BandeauInferieur
-
-class Personnage:
+from abc import ABC, abstractmethod
+import random
+class Personnage(ABC):
     
     def __init__(self, x, y):
         #variables de personnage
-
+        self.nom = None
         self.attaque = None
         self.defense = None
         self.pv = None
         self.vitesse = None
-        
+        self.esquive = None
         self.royaume = None
         
         self.action = None # True si le personnage n'a pas encore joué, False sinon
@@ -24,6 +25,7 @@ class Personnage:
         self.image_path = None
         
         self.bandeau = BandeauInferieur()
+        self.zone = []
         
     def afficher_deplacement(self, grille,fenetre,coordonnee):
         if self.afficher_deplacement_possible:
@@ -34,9 +36,9 @@ class Personnage:
                     if (case.x,case.y) in coordonnee:
                         pass
                     elif abs(dx) + abs(dy) <= self.vitesse:
-                        pygame.draw.rect(fenetre, ROUGE, case, 1)
+                        pygame.draw.rect(fenetre, (16,16,205), case, 1)
                         self.bandeau.afficher_personnage(fenetre,self.image_path,self.pv,self.attaque,self.defense)
-
+                        self.zone.append((case.x,case.y))
 
     def afficher_personnage(self, fenetre):
         image = pygame.image.load(self.image_path).convert_alpha()
@@ -76,11 +78,33 @@ class Personnage:
                                     
                     self.selectionne = False 
                     self.afficher_deplacement_possible = False 
-
-    def combat(self):
-        print("combat")
-        
+    
     def get_coordonnees(self):
         return (self.rect.x, self.rect.y)
     
     
+    @abstractmethod
+    def competence(self,cible,fenetre):
+        pass
+    
+    
+    def recevoir_attaque(self, degats,fenetre):
+         #Gère les dégâts reçus en tenant compte de l'esquive.
+        if random.random() < self.esquive:
+            self.bandeau.afficher_message(f"{self.nom} esquive l'attaque !",fenetre)
+            pygame.display.flip()
+            pygame.time.wait(250)
+        else:
+            self.pv -= max(degats, 0) # max(0, degats) pour éviter les PV négatifs
+            self.bandeau.afficher_message(f"{self.nom} reçoit {degats} dégâts !",fenetre)
+            pygame.display.flip()
+            pygame.time.wait(250)
+        
+
+    def soigner(self, soin,fenetre):
+        self.pv += soin
+        self.bandeau.afficher_message(f"{self.nom} récupère {soin} PV !",fenetre)
+
+    def buff(self, buff,fenetre):
+        self.defense += buff
+        self.bandeau.afficher_message(f"{self.nom} gagne {buff} points de défense !",fenetre)

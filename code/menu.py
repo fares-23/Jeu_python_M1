@@ -1,6 +1,7 @@
 import pygame
 from bouton import Bouton
 from constante import *
+import sys
 
 class Menu:
     def __init__(self, fenetre):

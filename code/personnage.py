@@ -4,6 +4,8 @@ import sys
 from bandeau_inferieur import BandeauInferieur
 from abc import ABC, abstractmethod
 import random
+from carte import Carte
+
 class Personnage(ABC):
     
     def __init__(self, x, y):
@@ -27,57 +29,122 @@ class Personnage(ABC):
         self.bandeau = BandeauInferieur()
         self.zone = []
         
-    def afficher_deplacement(self, grille,fenetre,coordonnee):
+    def afficher_deplacement(self, grille, fenetre, coordonnee, carte):
         if self.afficher_deplacement_possible:
+            # Récupération des coordonnées des obstacles
+            obstacles = (
+                carte.recuperer_coordonnees_calque("maison")
+                + carte.recuperer_coordonnees_calque("arbre")
+                + carte.recuperer_coordonnees_calque("eau")
+                + carte.recuperer_coordonnees_calque("rocher")
+            )
+
             for ligne in grille:
                 for case in ligne:
                     dx = (case.x - self.rect.x) // TAILLE_CASE
                     dy = (case.y - self.rect.y) // TAILLE_CASE
-                    if (case.x,case.y) in coordonnee:
-                        pass
-                    elif abs(dx) + abs(dy) <= self.vitesse:
-                        pygame.draw.rect(fenetre, (16,16,205), case, 1)
-                        self.bandeau.afficher_personnage(fenetre,self.image_path,self.pv,self.attaque,self.defense)
-                        self.zone.append((case.x,case.y))
 
-    def afficher_personnage(self, fenetre):
-        image = pygame.image.load(self.image_path).convert_alpha()
-        image = pygame.transform.smoothscale(image, (TAILLE_CASE, TAILLE_CASE))
-        fenetre.blit(image, self.rect)
+                    # Ignore les cases hors de portée ou déjà occupées
+                    if abs(dx) + abs(dy) > self.vitesse or (case.x, case.y) in coordonnee:
+                        continue
 
-    def deplacement(self, grille,event,coordonnee):
-        if self.action == True:
-            caseselectionnee = None
+                    # Vérifie s'il y a un obstacle bloquant la case
+                    is_blocked = False
+                    for obstacle in obstacles:
+                        # Bloque la progression si un obstacle se trouve sur la trajectoire
+                        if (
+                            # Horizontalement à droite
+                            dx > 0
+                            and case.y == obstacle[1]
+                            and obstacle[0] <= case.x <= obstacle[0] + (dx - 1) * TAILLE_CASE
+                        ) or (
+                            # Horizontalement à gauche
+                            dx < 0
+                            and case.y == obstacle[1]
+                            and obstacle[0] >= case.x >= obstacle[0] + (dx + 1) * TAILLE_CASE
+                        ) or (
+                            # Verticalement en bas
+                            dy > 0
+                            and case.x == obstacle[0]
+                            and obstacle[1] <= case.y <= obstacle[1] + (dy - 1) * TAILLE_CASE
+                        ) or (
+                            # Verticalement en haut
+                            dy < 0
+                            and case.x == obstacle[0]
+                            and obstacle[1] >= case.y >= obstacle[1] + (dy + 1) * TAILLE_CASE
+                        ):
+                            is_blocked = True
+                            break
+
+                    if not is_blocked:
+                        # Dessine la case valide
+                        pygame.draw.rect(fenetre, (16, 16, 205), case, 1)
+                        self.bandeau.afficher_personnage(
+                            fenetre, self.image_path, self.pv, self.attaque, self.defense
+                        )
+                        self.zone.append((case.x, case.y))
+                        
+    def deplacement(self, grille, event, coordonnee, carte):
+        if self.action:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if self.rect.collidepoint(mouse_pos):
-                    if self.selectionne: 
-                        self.afficher_deplacement_possible = False
-                        self.selectionne = False
-                    else:
-                        self.selectionne = True
-                        self.afficher_deplacement_possible = True
+                    self.selectionne = not self.selectionne
+                    self.afficher_deplacement_possible = self.selectionne
                 else:
                     for ligne in grille.cases:
                         for case in ligne:
                             if case.collidepoint(mouse_pos) and self.selectionne:
+                                obstacles = (
+                                    carte.recuperer_coordonnees_calque("maison")
+                                    + carte.recuperer_coordonnees_calque("arbre")
+                                    + carte.recuperer_coordonnees_calque("eau")
+                                    + carte.recuperer_coordonnees_calque("rocher")
+                                )
                                 dx = (case.x - self.rect.x) // TAILLE_CASE
                                 dy = (case.y - self.rect.y) // TAILLE_CASE
 
-                                if (case.x,case.y) in coordonnee:
-                                    self.afficher_deplacement_possible = False
-                                    self.selectionne = False
-                                    pass
-                                
-                                elif abs(dx) + abs(dy) <= self.vitesse:
+                                # Vérifie si le déplacement est bloqué
+                                is_blocked = False
+                                for obstacle in obstacles:
+                                    if (
+                                        # Horizontalement à droite
+                                        dx > 0
+                                        and case.y == obstacle[1]
+                                        and obstacle[0] <= case.x <= obstacle[0] + (dx - 1) * TAILLE_CASE
+                                    ) or (
+                                        # Horizontalement à gauche
+                                        dx < 0
+                                        and case.y == obstacle[1]
+                                        and obstacle[0] >= case.x >= obstacle[0] + (dx + 1) * TAILLE_CASE
+                                    ) or (
+                                        # Verticalement en bas
+                                        dy > 0
+                                        and case.x == obstacle[0]
+                                        and obstacle[1] <= case.y <= obstacle[1] + (dy - 1) * TAILLE_CASE
+                                    ) or (
+                                        # Verticalement en haut
+                                        dy < 0
+                                        and case.x == obstacle[0]
+                                        and obstacle[1] >= case.y >= obstacle[1] + (dy + 1) * TAILLE_CASE
+                                    ):
+                                        is_blocked = True
+                                        break
+
+                                if not is_blocked and abs(dx) + abs(dy) <= self.vitesse:
+                                    # Effectue le déplacement
                                     self.rect.x = case.x
                                     self.rect.y = case.y
                                     self.afficher_deplacement_possible = False
                                     self.selectionne = False
                                     self.action = False
-                                    
-                    self.selectionne = False 
-                    self.afficher_deplacement_possible = False 
+                                    return
+
+
+    def afficher_personnage(self, fenetre):
+        image = pygame.image.load(self.image_path).convert_alpha()
+        image = pygame.transform.smoothscale(image, (TAILLE_CASE, TAILLE_CASE))
+        fenetre.blit(image, self.rect)
     
     def get_coordonnees(self):
         return (self.rect.x, self.rect.y)

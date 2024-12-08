@@ -30,7 +30,8 @@ class Main:
             print(f"Erreur lors du chargement de la carte : {e}")
             pygame.quit()
             sys.exit() 
-            
+        self.carte.extraire_coordonnees_par_calque()
+        
         # Créer une instance de Grille pour gérer les cases
         self.grille = Grille(taille_x=120, taille_y=120, x=0, y=0)
         
@@ -65,7 +66,7 @@ class Main:
                     elif self.etat == "selection":
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
-                        self.jeu.verifier_clic(event, self.selection.liste_royaume)
+                        self.jeu.verifier_clic(event, self.selection.liste_royaume,self.carte)
 
             self.jeu.liste_personnage = self.selection.liste_troupe
 
@@ -83,7 +84,8 @@ class Main:
             elif self.etat == "jeu":
                 self.fenetre.fill(BLANC)
                 self.carte.afficher(self.fenetre)  # Affiche la carte
-                self.jeu.afficher(self.fenetre, self.carte.tmx_data)
+                self.jeu.afficher(self.fenetre, self.carte.tmx_data,self.carte)
+                
 
              # Mettre à jour l'affichage à chaque itération
             pygame.display.flip()

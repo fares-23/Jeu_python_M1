@@ -21,17 +21,17 @@ class Jeu:
         self.__next_tour = False
         self.__bandeau = BandeauInferieur()
         self.__liste_royaume = None
-
-    def afficher(self, fenetre, tmx_data):
+        
+    def afficher(self, fenetre, tmx_data,carte):
         self.grille.afficher(fenetre,tmx_data)
         self.__bandeau.afficher(fenetre)
         self.__bandeau.afficher_tour(fenetre,self.tour)
         for i in range(len(self.__liste_personnage)):
-            self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees())
+            self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees(),carte)
             self.__liste_personnage[i].afficher_personnage(fenetre)
             
         
-    def verifier_clic(self, event,liste_royaume=None):
+    def verifier_clic(self, event,liste_royaume=None,carte=None):
         self.__liste_royaume = liste_royaume
         coordonnee = []
         for i in range(len(self.__liste_personnage)):
@@ -42,7 +42,7 @@ class Jeu:
         for i in range(len(self.__liste_personnage)):
             
             if self.__liste_personnage[i].royaume == self.__liste_royaume[self.tour%2]:
-                self.__liste_personnage[i].deplacement(self.grille,event,coordonnee)
+                self.__liste_personnage[i].deplacement(self.grille,event,coordonnee,carte)
                 action.append(self.__liste_personnage[i].action)
                 
         #gère les actions des personnages
@@ -96,6 +96,3 @@ class Jeu:
                                 return
                             perso_selectionne.competence(cible, fenetre)
                             return
-
-
-

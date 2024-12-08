@@ -1,5 +1,6 @@
 import pygame
 from pytmx import load_pygame
+from constante import *
 
 class Carte:
     def __init__(self, fichier_tmx, offset_x=0, offset_y=0):
@@ -23,10 +24,12 @@ class Carte:
                 zone_coords = []  # Liste pour stocker les coordonnées des tuiles de ce calque
                 for x, y, tile in layer.tiles():
                     if tile:  # Si la tuile existe
-                        zone_coords.append((x, y))  # Ajoute les coordonnées (x, y) de la tuile
+                        zone_coords.append((x*TAILLE_CASE, y*TAILLE_CASE))  # Ajoute les coordonnées (x, y) de la tuile
                 # Ajoute ces coordonnées à l'attribut 'zones' sous le nom du calque
                 self.zones[layer.name] = zone_coords
-                print(f"Calque '{layer.name}' : {len(zone_coords)} tuiles trouvées.")
+                #print(f"Calque '{layer.name}' : {len(zone_coords)} tuiles trouvées.")
+                #print(f"coordonnées du calque '{layer.name}' : {zone_coords}")
+
 
     def afficher(self, fenetre):
         """Affiche tous les calques visibles."""
@@ -46,5 +49,5 @@ class Carte:
         if nom_calque in self.zones:
             return self.zones[nom_calque]
         else:
-            print(f"Le calque '{nom_calque}' n'existe pas.")
+            #print(f"Le calque '{nom_calque}' n'existe pas.")
             return []

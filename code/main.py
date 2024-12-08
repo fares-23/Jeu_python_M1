@@ -81,7 +81,6 @@ class Main:
             elif self.etat == "selection":
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
-                self.fenetre.fill(BLANC)
                 self.carte.afficher(self.fenetre)  # Affiche la carte
                 self.jeu.afficher(self.fenetre, self.carte.tmx_data,self.carte)
                 

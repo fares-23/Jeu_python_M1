@@ -3,9 +3,9 @@ from personnage import Personnage
 from constante import *
 from bandeau_inferieur import BandeauInferieur
 class Archer(Personnage):
-    def __init__(self, x, y,royaume = None):
-        super().__init__(x, y)  # Appelle le constructeur de Personnage
-        self.image_path =  archer_path 
+    def __init__(self, x, y,image_path,royaume = None):
+        super().__init__(x, y,image_path)  # Appelle le constructeur de Personnage
+        self.image_path = image_path
         self.attaque = 10
         self.defense = 5
         self.pv = 100
@@ -14,6 +14,7 @@ class Archer(Personnage):
         self.nom = "archer"
         self.royaume = royaume
         self.action = True
+    
 
     
     def competence(self,cible,fenetre):

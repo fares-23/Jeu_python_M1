@@ -4,9 +4,9 @@ from constante import *
 from bandeau_inferieur import BandeauInferieur
 
 class Chevalier(Personnage):
-    def __init__(self, x, y,royaume = None):
-        super().__init__(x, y)  # Appelle le constructeur de Personnage
-        self.image_path =  chevalier_path 
+    def __init__(self, x, y,image_path,royaume = None):
+        super().__init__(x, y,image_path)  # Appelle le constructeur de Personnage
+        self.image_path =  image_path 
         self.attaque = 10
         self.defense = 5
         self.pv = 100
@@ -16,7 +16,6 @@ class Chevalier(Personnage):
         self.action = True 
         self.nom = "chevalier"
         self.bandeau = BandeauInferieur()
-        
 
     def competence(self,cible,fenetre):
         self.bandeau.afficher_message("'a' : Coup d'épée |'z' : Bouclier Divin  |'e' : Coup Puissant" ,fenetre)

@@ -23,7 +23,14 @@ coordonnee_start = [[(3*TAILLE_CASE,3*TAILLE_CASE),(4*TAILLE_CASE,4*TAILLE_CASE)
 #nombre de troupe
 nb_troupe = 5
 
-#image_path
-archer_path = "assets/tiles/dungeon_crawl/monster/deep_elf_master_archer.png"
-chevalier_path = "assets/tiles/dungeon_crawl/monster/deep_elf_knight_new.png"
-mage_path = "assets/tiles/dungeon_crawl/monster/deep_elf_mage.png"
+archer_b_path = "assets/unites/archer_b.png"
+archer_r_path = "assets/unites/archer_r.png"
+archer_j_path = "assets/unites/archer_j.png"
+
+chevalier_b_path = "assets/unites/chevalier_b.png"
+chevalier_r_path = "assets/unites/chevalier_r.png"
+chevalier_j_path = "assets/unites/chevalier_j.png"
+
+mage_b_path = "assets/unites/mage_b.png"
+mage_r_path = "assets/unites/mage_r.png"
+mage_j_path = "assets/unites/mage_j.png"

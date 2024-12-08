@@ -28,6 +28,9 @@ class BandeauInferieur:
         
         defense_text = self.font.render(f"DEF : {defense}", True, (0, 0, 0))  # Affiche les points de vie en noir
         fenetre.blit(defense_text, (90, 753))
+        
+        tour_text = self.font.render(f"'espace' pour attaquer", True, (0, 0, 0))
+        fenetre.blit(tour_text, (200, 735))
 
     def afficher_tour(self,fenetre,tour):
         tour_text = self.font.render(f"Tour du joueur  : {(tour%2)+1}", True, (0, 0, 0))

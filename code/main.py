@@ -12,7 +12,7 @@ from carte import Carte
 
 class Main:
     pygame.init()
-   # musique
+   #musique
     
     #pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
     #pygame.mixer.music.play(start=0.0, fade_ms=5000)
@@ -41,7 +41,6 @@ class Main:
         self.jeu = Jeu()
         self.fond = pygame.image.load("assets/interface/main_menu_background.jpg")
         self.fond = pygame.transform.scale(self.fond, RESOLUTION_JEU)
-
         # État initial
         self.etat = "menu"
 
@@ -85,6 +84,7 @@ class Main:
                 self.fenetre.fill(BLANC)
                 self.carte.afficher(self.fenetre)  # Affiche la carte
                 self.jeu.afficher(self.fenetre, self.carte.tmx_data,self.carte)
+                
                 
 
              # Mettre à jour l'affichage à chaque itération

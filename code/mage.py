@@ -4,9 +4,9 @@ from constante import *
 from bandeau_inferieur import BandeauInferieur
 
 class Mage(Personnage):
-    def __init__(self, x, y,royaume = None):
-        super().__init__(x, y) 
-        self.image_path =  mage_path 
+    def __init__(self, x, y,image_path,royaume = None):
+        super().__init__(x, y,image_path) 
+        self.image_path =  image_path 
         self.attaque = 10
         self.defense = 5
         self.pv = 100
@@ -16,7 +16,8 @@ class Mage(Personnage):
         self.action = True
         self.nom = "mage"
         self.bandeau = BandeauInferieur()
-
+        
+        
     def competence(self,cible,fenetre):
         self.bandeau.afficher_message("'a' : Boule de Feu |'z' : Soin  |'e' : Explosion Magique" ,fenetre)
         pygame.display.flip()

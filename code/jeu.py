@@ -13,7 +13,7 @@ class Jeu:
         taille_x = RESOLUTION[0] // TAILLE_CASE
         taille_y = RESOLUTION[1] // TAILLE_CASE
 
-# Création de la grille, du personnage
+        # Création de la grille, du personnage
         self.grille = Grille(taille_x, taille_y, 0, 0)
 
         self.__liste_personnage = []
@@ -70,11 +70,12 @@ class Jeu:
         return self.__tour
     
     def combat(self, perso_selectionne, fenetre):
+        perso_selectionne.zone_combat(fenetre,self.grille.cases)
         # Changer la forme de la souris pour indiquer la sélection
         pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
         # Variable pour stocker la cible sélectionnée
         cible = None
-        self.__bandeau.afficher_message("Selectionner une cible.", fenetre)
+        self.__bandeau.afficher_message("Selectionner une cible (pour quitter selectionner une cible hors de porté).", fenetre)
         pygame.display.flip()
         # Boucle pour attendre la sélection de la cible
         while cible is None:
@@ -88,13 +89,11 @@ class Jeu:
                         if perso.rect.collidepoint(event.pos) and perso != perso_selectionne and perso.royaume != perso_selectionne.royaume:
                             cible = perso
                             self.verifier_clic(event,self.carte,self.__liste_royaume)
-                            if cible.get_coordonnees() not in perso_selectionne.zone:
+                            if cible.get_coordonnees() not in perso_selectionne.zone_attaque:
                                 self.__bandeau.afficher_message("La cible impossible", fenetre)
                                 pygame.display.flip()
-                                pygame.time.wait(250)
+                                pygame.time.wait(500)
                                 return
                             perso_selectionne.competence(cible, fenetre)
                             return
-
-
 

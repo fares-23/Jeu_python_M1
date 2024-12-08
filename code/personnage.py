@@ -8,7 +8,7 @@ from carte import Carte
 
 class Personnage(ABC):
     
-    def __init__(self, x, y):
+    def __init__(self, x, y,image_path):
         #variables de personnage
         self.nom = None
         self.attaque = None
@@ -28,8 +28,11 @@ class Personnage(ABC):
         
         self.bandeau = BandeauInferieur()
         self.zone = []
+        self.zone_attaque = []
+        self.coordonnee = None
         
     def afficher_deplacement(self, grille, fenetre, coordonnee, carte):
+        self.coordonnee = coordonnee
         if self.afficher_deplacement_possible:
             # Récupération des coordonnées des obstacles
             obstacles = (
@@ -83,7 +86,7 @@ class Personnage(ABC):
                             fenetre, self.image_path, self.pv, self.attaque, self.defense
                         )
                         self.zone.append((case.x, case.y))
-
+            
     def deplacement(self, grille, event, coordonnee, carte):
         if self.action:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -119,7 +122,6 @@ class Personnage(ABC):
                                     self.action = False
                                     return
 
-
     def afficher_personnage(self, fenetre):
         image = pygame.image.load(self.image_path).convert_alpha()
         image = pygame.transform.smoothscale(image, (TAILLE_CASE, TAILLE_CASE))
@@ -127,26 +129,47 @@ class Personnage(ABC):
     
     def get_coordonnees(self):
         return (self.rect.x, self.rect.y)
-    
-    
+
+    def zone_combat(self, fenetre, grille):
+        if self.nom == "archer" or self.nom == "mage":
+            for ligne in grille:
+                for case in ligne:
+                    dx = (case.x - self.rect.x) // TAILLE_CASE
+                    dy = (case.y - self.rect.y) // TAILLE_CASE
+                    if (case.x, case.y) in self.coordonnee:
+                        pass
+                    elif abs(dx) + abs(dy) <= self.vitesse:
+                        pygame.draw.rect(fenetre, ROUGE, case, 1)
+                        self.bandeau.afficher_personnage(fenetre, self.image_path, self.pv, self.attaque, self.defense)
+                        self.zone_attaque.append((case.x, case.y))
+        else:
+            # Zone d'attaque au corps à corps
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    x = self.rect.x // TAILLE_CASE + dx
+                    y = self.rect.y // TAILLE_CASE + dy
+                    if 0 <= x < len(grille[0]) and 0 <= y < len(grille):
+                        case = grille[y][x]
+                        pygame.draw.rect(fenetre, ROUGE, case, 1)
+                        self.zone_attaque.append((case.x, case.y))
+
+
     @abstractmethod
     def competence(self,cible,fenetre):
         pass
-    
-    
+      
     def recevoir_attaque(self, degats,fenetre):
          #Gère les dégâts reçus en tenant compte de l'esquive.
         if random.random() < self.esquive:
             self.bandeau.afficher_message(f"{self.nom} esquive l'attaque !",fenetre)
             pygame.display.flip()
-            pygame.time.wait(250)
+            pygame.time.wait(500)
         else:
             self.pv -= max(degats, 0) # max(0, degats) pour éviter les PV négatifs
             self.bandeau.afficher_message(f"{self.nom} reçoit {degats} dégâts !",fenetre)
             pygame.display.flip()
-            pygame.time.wait(250)
+            pygame.time.wait(500)
         
-
     def soigner(self, soin,fenetre):
         self.pv += soin
         self.bandeau.afficher_message(f"{self.nom} récupère {soin} PV !",fenetre)
@@ -154,3 +177,7 @@ class Personnage(ABC):
     def buff(self, buff,fenetre):
         self.defense += buff
         self.bandeau.afficher_message(f"{self.nom} gagne {buff} points de défense !",fenetre)
+
+
+                        
+                        

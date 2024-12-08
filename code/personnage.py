@@ -83,12 +83,13 @@ class Personnage(ABC):
                             fenetre, self.image_path, self.pv, self.attaque, self.defense
                         )
                         self.zone.append((case.x, case.y))
-                        
+
     def deplacement(self, grille, event, coordonnee, carte):
         if self.action:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if self.rect.collidepoint(mouse_pos):
+                    # Activer ou désactiver la sélection du personnage
                     self.selectionne = not self.selectionne
                     self.afficher_deplacement_possible = self.selectionne
                 else:
@@ -104,35 +105,13 @@ class Personnage(ABC):
                                 dx = (case.x - self.rect.x) // TAILLE_CASE
                                 dy = (case.y - self.rect.y) // TAILLE_CASE
 
-                                # Vérifie si le déplacement est bloqué
-                                is_blocked = False
-                                for obstacle in obstacles:
-                                    if (
-                                        # Horizontalement à droite
-                                        dx > 0
-                                        and case.y == obstacle[1]
-                                        and obstacle[0] <= case.x <= obstacle[0] + (dx - 1) * TAILLE_CASE
-                                    ) or (
-                                        # Horizontalement à gauche
-                                        dx < 0
-                                        and case.y == obstacle[1]
-                                        and obstacle[0] >= case.x >= obstacle[0] + (dx + 1) * TAILLE_CASE
-                                    ) or (
-                                        # Verticalement en bas
-                                        dy > 0
-                                        and case.x == obstacle[0]
-                                        and obstacle[1] <= case.y <= obstacle[1] + (dy - 1) * TAILLE_CASE
-                                    ) or (
-                                        # Verticalement en haut
-                                        dy < 0
-                                        and case.x == obstacle[0]
-                                        and obstacle[1] >= case.y >= obstacle[1] + (dy + 1) * TAILLE_CASE
-                                    ):
-                                        is_blocked = True
-                                        break
+                                if (case.x, case.y) in coordonnee or (case.x, case.y) in obstacles:
+                                    # Bloque si c'est un obstacle ou une case interdite
+                                    self.afficher_deplacement_possible = False
+                                    self.selectionne = False
+                                    return
 
-                                if not is_blocked and abs(dx) + abs(dy) <= self.vitesse:
-                                    # Effectue le déplacement
+                                if abs(dx) + abs(dy) <= self.vitesse:
                                     self.rect.x = case.x
                                     self.rect.y = case.y
                                     self.afficher_deplacement_possible = False

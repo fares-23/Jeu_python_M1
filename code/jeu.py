@@ -21,6 +21,7 @@ class Jeu:
         self.__next_tour = False
         self.__bandeau = BandeauInferieur()
         self.__liste_royaume = None
+        self.carte = None
         
     def afficher(self, fenetre, tmx_data,carte):
         self.grille.afficher(fenetre,tmx_data)
@@ -31,8 +32,9 @@ class Jeu:
             self.__liste_personnage[i].afficher_personnage(fenetre)
             
         
-    def verifier_clic(self, event,liste_royaume=None,carte=None):
+    def verifier_clic(self, event,carte,liste_royaume=None):
         self.__liste_royaume = liste_royaume
+        self.carte = carte
         coordonnee = []
         for i in range(len(self.__liste_personnage)):
             coordonnee.append(self.__liste_personnage[i].get_coordonnees())
@@ -42,7 +44,7 @@ class Jeu:
         for i in range(len(self.__liste_personnage)):
             
             if self.__liste_personnage[i].royaume == self.__liste_royaume[self.tour%2]:
-                self.__liste_personnage[i].deplacement(self.grille,event,coordonnee,carte)
+                self.__liste_personnage[i].deplacement(self.grille,event,coordonnee,self.carte)
                 action.append(self.__liste_personnage[i].action)
                 
         #gère les actions des personnages
@@ -53,9 +55,6 @@ class Jeu:
             self.__tour += 1
             for i in range(len(self.__liste_personnage)):
                 self.__liste_personnage[i].action = True
-
-        
- 
      
         
     @property
@@ -88,7 +87,7 @@ class Jeu:
                     for perso in self.liste_personnage:
                         if perso.rect.collidepoint(event.pos) and perso != perso_selectionne and perso.royaume != perso_selectionne.royaume:
                             cible = perso
-                            self.verifier_clic(event,self.__liste_royaume)
+                            self.verifier_clic(event,self.carte,self.__liste_royaume)
                             if cible.get_coordonnees() not in perso_selectionne.zone:
                                 self.__bandeau.afficher_message("La cible impossible", fenetre)
                                 pygame.display.flip()
@@ -96,3 +95,6 @@ class Jeu:
                                 return
                             perso_selectionne.competence(cible, fenetre)
                             return
+
+
+

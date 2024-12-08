@@ -66,7 +66,7 @@ class Main:
                     elif self.etat == "selection":
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
-                        self.jeu.verifier_clic(event, self.selection.liste_royaume,self.carte)
+                        self.jeu.verifier_clic(event,self.carte, self.selection.liste_royaume)
 
             self.jeu.liste_personnage = self.selection.liste_troupe
 

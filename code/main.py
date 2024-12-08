@@ -66,7 +66,7 @@ class Main:
                         self.etat = self.selection.gerer_evenements(event)
                     elif self.etat == "jeu":
                         self.jeu.verifier_clic(event,self.carte, self.selection.liste_royaume)
-
+                        
             self.jeu.liste_personnage = self.selection.liste_troupe
 
          
@@ -82,7 +82,7 @@ class Main:
                 self.selection.dessiner(self.fenetre)
             elif self.etat == "jeu":
                 self.carte.afficher(self.fenetre)  # Affiche la carte
-                self.jeu.afficher(self.fenetre, self.carte.tmx_data,self.carte)
+                self.jeu.afficher(self.fenetre, self.carte.tmx_data,self.carte,self.selection.liste_royaume)
                 
                 
 

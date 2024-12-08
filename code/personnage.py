@@ -30,7 +30,8 @@ class Personnage(ABC):
         self.zone = []
         self.zone_attaque = []
         self.coordonnee = None
-        
+
+
     def afficher_deplacement(self, grille, fenetre, coordonnee, carte):
         self.coordonnee = coordonnee
         if self.afficher_deplacement_possible:
@@ -122,9 +123,11 @@ class Personnage(ABC):
                                     self.action = False
                                     return
 
-    def afficher_personnage(self, fenetre):
+    def afficher_personnage(self, fenetre,liste_royaume=None):
         image = pygame.image.load(self.image_path).convert_alpha()
         image = pygame.transform.smoothscale(image, (TAILLE_CASE, TAILLE_CASE))
+        if self.royaume == liste_royaume[0]:
+            image =  pygame.transform.flip(image,True,False) #retourne l'image verticalement
         fenetre.blit(image, self.rect)
     
     def get_coordonnees(self):

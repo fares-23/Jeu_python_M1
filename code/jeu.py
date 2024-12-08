@@ -22,14 +22,15 @@ class Jeu:
         self.__bandeau = BandeauInferieur()
         self.__liste_royaume = None
         self.carte = None
+
         
-    def afficher(self, fenetre, tmx_data,carte):
+    def afficher(self, fenetre, tmx_data,carte,liste_royaume=None):
         self.grille.afficher(fenetre,tmx_data)
         self.__bandeau.afficher(fenetre)
         self.__bandeau.afficher_tour(fenetre,self.tour)
         for i in range(len(self.__liste_personnage)):
             self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees(),carte)
-            self.__liste_personnage[i].afficher_personnage(fenetre)
+            self.__liste_personnage[i].afficher_personnage(fenetre,liste_royaume)
             
         
     def verifier_clic(self, event,carte,liste_royaume=None):

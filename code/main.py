@@ -26,7 +26,6 @@ class Main:
         # Initialisation de la carte
         
         map = random.randint(1, 3)
-        print(map)
         if map == 1:
             self.choix_map = "map1.tmx"
             self.coord_start = co_map1

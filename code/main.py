@@ -9,7 +9,7 @@ from bouton import Bouton
 from jeu import Jeu
 from selection import Selection
 from carte import Carte
-
+import random
 class Main:
     pygame.init()
    #musique
@@ -24,12 +24,26 @@ class Main:
         pygame.display.set_caption("Jeu avec Tiled")
 
         # Initialisation de la carte
+        
+        map = random.randint(1, 3)
+        print(map)
+        if map == 1:
+            self.choix_map = "map1.tmx"
+            self.coord_start = co_map1
+        elif map == 2:
+            self.choix_map = "map2.tmx"
+            self.coord_start = co_map2
+        else:
+            self.choix_map = "map3.tmx"
+            self.coord_start = co_map3
+        
         try:
-            self.carte = Carte("map2.tmx", offset_x=0, offset_y=0)
+            self.carte = Carte(self.choix_map, offset_x=0, offset_y=0)
         except Exception as e:
             print(f"Erreur lors du chargement de la carte : {e}")
             pygame.quit()
             sys.exit() 
+            
         self.carte.extraire_coordonnees_par_calque()
         
         # Créer une instance de Grille pour gérer les cases
@@ -63,7 +77,7 @@ class Main:
                     if self.etat == "menu":
                         self.etat = self.menu.verifier_clic(event)
                     elif self.etat == "selection":
-                        self.etat = self.selection.gerer_evenements(event)
+                        self.etat = self.selection.gerer_evenements(event,self.coord_start)
                     elif self.etat == "jeu":
                         self.jeu.verifier_clic(event,self.carte, self.selection.liste_royaume)
                         

@@ -196,18 +196,24 @@ class Personnage(ABC):
             pygame.display.flip()
             pygame.time.wait(500)
         else:
-            self.pv -= max(degats, 0) # max(0, degats) pour éviter les PV négatifs
-            self.bandeau.afficher_message(f"{self.nom} reçoit {degats} dégâts !",fenetre)
+            if random.random()<0.1:
+                degats = 2*degats
+                self.bandeau.afficher_message(f"{self.nom} subit un coup critique !",fenetre)
+            else :
+                self.pv -= max(degats, 0) # max(0, degats) pour éviter les PV négatifs
+                self.bandeau.afficher_message(f"{self.nom} reçoit {degats} dégâts !",fenetre)
             pygame.display.flip()
             pygame.time.wait(500)
         
     def soigner(self, soin,fenetre):
         self.pv += soin
         self.bandeau.afficher_message(f"{self.nom} récupère {soin} PV !",fenetre)
+        pygame.wait(500)
 
     def buff(self, buff,fenetre):
         self.defense += buff
         self.bandeau.afficher_message(f"{self.nom} gagne {buff} points de défense !",fenetre)
+        pygame.wait(500)
 
     @abstractmethod
     def carte_effet(self):

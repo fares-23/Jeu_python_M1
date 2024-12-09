@@ -6,11 +6,11 @@ class Archer(Personnage):
     def __init__(self, x, y,image_path,royaume = None):
         super().__init__(x, y,image_path)  # Appelle le constructeur de Personnage
         self.image_path = image_path
-        self.attaque = 10
-        self.defense = 5
-        self.pv = 100
-        self.vitesse = 5  # Vitesse spécifique à l'archer
-        self.esquive = 0.3
+        self.attaque = archer_attaque
+        self.defense = archer_defense
+        self.pv = archer_pv
+        self.vitesse = archer_vitesse 
+        self.esquive = archer_esquive
         self.nom = "archer"
         self.royaume = royaume
         self.action = True
@@ -40,3 +40,12 @@ class Archer(Personnage):
                             print("Attaque rapide !")
                             degats = self.attaque - cible.defense
                         cible.recevoir_attaque(2*degats,fenetre)
+                        
+    def carte_effet(self):
+        if (self.rect.x, self.rect.y) in self.boue:
+            self.vitesse = 1
+        elif (self.rect.x, self.rect.y) in self.arbre:
+            self.esquive = 0.8
+        else:
+            self.vitesse = archer_vitesse
+            self.esquive = archer_esquive

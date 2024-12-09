@@ -31,6 +31,7 @@ class Jeu:
         for i in range(len(self.__liste_personnage)):
             self.__liste_personnage[i].afficher_deplacement(self.grille.cases,fenetre,self.__liste_personnage[i].get_coordonnees(),carte)
             self.__liste_personnage[i].afficher_personnage(fenetre,liste_royaume)
+            self.__liste_personnage[i].carte_effet()
             
         
     def verifier_clic(self, event,carte,liste_royaume=None):
@@ -56,7 +57,6 @@ class Jeu:
             self.__tour += 1
             for i in range(len(self.__liste_personnage)):
                 self.__liste_personnage[i].action = True
-     
         
     @property
     def liste_personnage(self):

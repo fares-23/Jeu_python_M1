@@ -30,19 +30,23 @@ class Personnage(ABC):
         self.zone = []
         self.zone_attaque = []
         self.coordonnee = None
-
-
+        self.boue = []
+        self.arbre = []
+        self.carte = []
+        
     def afficher_deplacement(self, grille, fenetre, coordonnee, carte):
+        self.carte = carte
         self.coordonnee = coordonnee
+        self.arbre = [] + carte.recuperer_coordonnees_calque("arbre")
+        self.boue = [] + carte.recuperer_coordonnees_calque("boue")
         if self.afficher_deplacement_possible:
             # Récupération des coordonnées des obstacles
             obstacles = (
                 carte.recuperer_coordonnees_calque("maison")
-                + carte.recuperer_coordonnees_calque("arbre")
                 + carte.recuperer_coordonnees_calque("eau")
                 + carte.recuperer_coordonnees_calque("rocher")
             )
-
+            
             for ligne in grille:
                 for case in ligne:
                     dx = (case.x - self.rect.x) // TAILLE_CASE
@@ -84,7 +88,7 @@ class Personnage(ABC):
                         # Dessine la case valide
                         pygame.draw.rect(fenetre, (16, 16, 205), case, 1)
                         self.bandeau.afficher_personnage(
-                            fenetre, self.image_path, self.pv, self.attaque, self.defense
+                            fenetre, self.image_path, self.pv, self.attaque, self.defense,self.esquive,self.royaume
                         )
                         self.zone.append((case.x, case.y))
             
@@ -102,7 +106,6 @@ class Personnage(ABC):
                             if case.collidepoint(mouse_pos) and self.selectionne:
                                 obstacles = (
                                     carte.recuperer_coordonnees_calque("maison")
-                                    + carte.recuperer_coordonnees_calque("arbre")
                                     + carte.recuperer_coordonnees_calque("eau")
                                     + carte.recuperer_coordonnees_calque("rocher")
                                 )
@@ -143,7 +146,7 @@ class Personnage(ABC):
                         pass
                     elif abs(dx) + abs(dy) <= self.vitesse:
                         pygame.draw.rect(fenetre, ROUGE, case, 1)
-                        self.bandeau.afficher_personnage(fenetre, self.image_path, self.pv, self.attaque, self.defense)
+                        self.bandeau.afficher_personnage(fenetre, self.image_path, self.pv, self.attaque, self.defense,self.esquive,self.royaume)
                         self.zone_attaque.append((case.x, case.y))
         else:
             # Zone d'attaque au corps à corps
@@ -155,7 +158,6 @@ class Personnage(ABC):
                         case = grille[y][x]
                         pygame.draw.rect(fenetre, ROUGE, case, 1)
                         self.zone_attaque.append((case.x, case.y))
-
 
     @abstractmethod
     def competence(self,cible,fenetre):
@@ -181,6 +183,8 @@ class Personnage(ABC):
         self.defense += buff
         self.bandeau.afficher_message(f"{self.nom} gagne {buff} points de défense !",fenetre)
 
-
+    @abstractmethod
+    def carte_effet(self):
+        pass
                         
                         

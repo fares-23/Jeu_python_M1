@@ -24,7 +24,6 @@ class Main:
         pygame.display.set_caption("Jeu avec Tiled")
 
         # Initialisation de la carte
-        
         map = random.randint(1, 3)
         if map == 1:
             self.choix_map = "map1.tmx"

@@ -7,17 +7,15 @@ RESOLUTION_JEU = (RESOLUTION[0], RESOLUTION[1] +50)
 
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
-ROUGE = (255, 0, 0) #chevalier
-VERT = (0, 255, 0) #archer
-BLEU = (0, 0, 255) #mage
-
+ROUGE = (255, 0, 0) 
+VERT = (0, 255, 0) 
+BLEU = (0, 0, 255)
 
 COULEUR_GRILLE = (255,255,255,0)
 COULEUR_FOND = BLANC  # Définition de la couleur de fond
  
-
-
-co_map1 = [[(5*TAILLE_CASE,13*TAILLE_CASE),(5*TAILLE_CASE,14*TAILLE_CASE),(4*TAILLE_CASE,12*TAILLE_CASE),(4*TAILLE_CASE,13*TAILLE_CASE),(4*TAILLE_CASE,12*TAILLE_CASE)],
+#coordonées initiales des personnages
+co_map1 = [[(5*TAILLE_CASE,13*TAILLE_CASE),(5*TAILLE_CASE,14*TAILLE_CASE),(4*TAILLE_CASE,12*TAILLE_CASE),(4*TAILLE_CASE,13*TAILLE_CASE),(4*TAILLE_CASE,11*TAILLE_CASE)],
            [(24*TAILLE_CASE,5*TAILLE_CASE),(20*TAILLE_CASE,5*TAILLE_CASE),(21*TAILLE_CASE,6*TAILLE_CASE),(22*TAILLE_CASE,6*TAILLE_CASE),(22*TAILLE_CASE,5*TAILLE_CASE)]]
 
 co_map2 = [[(1*TAILLE_CASE,4*TAILLE_CASE),(2*TAILLE_CASE,4*TAILLE_CASE),(4*TAILLE_CASE,5*TAILLE_CASE),(2*TAILLE_CASE,5*TAILLE_CASE),(4*TAILLE_CASE,4*TAILLE_CASE)],
@@ -41,3 +39,22 @@ chevalier_j_path = "assets/unites/chevalier_j.png"
 mage_b_path = "assets/unites/mage_b.png"
 mage_r_path = "assets/unites/mage_r.png"
 mage_j_path = "assets/unites/mage_j.png"
+
+#Statistic des personnages
+archer_esquive = 0.3
+archer_pv = 60
+archer_attaque = 5
+archer_defense = 5
+archer_vitesse = 4
+
+chevalier_esquive = 0.1
+chevalier_pv = 100
+chevalier_attaque = 7
+chevalier_defense = 8
+chevalier_vitesse = 2
+
+mage_esquive = 0.2
+mage_pv = 50
+mage_attaque = 10
+mage_defense = 3
+mage_vitesse = 3

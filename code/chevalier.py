@@ -7,11 +7,11 @@ class Chevalier(Personnage):
     def __init__(self, x, y,image_path,royaume = None):
         super().__init__(x, y,image_path)  # Appelle le constructeur de Personnage
         self.image_path =  image_path 
-        self.attaque = 10
-        self.defense = 5
-        self.pv = 100
-        self.vitesse = 3  # Vitesse spécifique à l'archer
-        self.esquive = 0.2
+        self.attaque = chevalier_attaque
+        self.defense = chevalier_defense
+        self.pv = chevalier_pv
+        self.vitesse = chevalier_vitesse
+        self.esquive = chevalier_esquive
         self.royaume = royaume
         self.action = True 
         self.nom = "chevalier"
@@ -32,8 +32,17 @@ class Chevalier(Personnage):
                         cible.recevoir_attaque(degats,fenetre)
                     if event.key == pygame.K_z:
                         choix = 2
-                        self.buff(5,fenetre)
+                        self.buff(10,fenetre)
                     if event.key == pygame.K_e:
                         choix = 3
                         degats = 3*self.attaque - cible.defense
                         cible.recevoir_attaque(degats,fenetre)
+                        
+    def carte_effet(self):
+        if (self.rect.x, self.rect.y) in self.boue:
+            self.vitesse = 1
+        elif (self.rect.x, self.rect.y) in self.arbre:
+            self.esquive = 0.8
+        else:
+            self.vitesse = chevalier_vitesse
+            self.esquive = chevalier_esquive

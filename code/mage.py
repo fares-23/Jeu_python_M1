@@ -7,11 +7,11 @@ class Mage(Personnage):
     def __init__(self, x, y,image_path,royaume = None):
         super().__init__(x, y,image_path) 
         self.image_path =  image_path 
-        self.attaque = 10
-        self.defense = 5
-        self.pv = 100
-        self.vitesse = 2 
-        self.esquive = 0.1
+        self.attaque = mage_attaque
+        self.defense = mage_defense
+        self.pv = mage_pv
+        self.vitesse = mage_vitesse 
+        self.esquive = mage_esquive
         self.royaume = royaume
         self.action = True
         self.nom = "mage"
@@ -38,3 +38,12 @@ class Mage(Personnage):
                         choix = 3
                         degats = 3*self.attaque - cible.defense
                         cible.recevoir_attaque(degats,fenetre)
+
+    def carte_effet(self):
+        if (self.rect.x, self.rect.y) in self.boue:
+            self.vitesse = 1
+        elif (self.rect.x, self.rect.y) in self.arbre:
+            self.esquive = 0.8
+        else:
+            self.vitesse = mage_vitesse
+            self.esquive = mage_esquive

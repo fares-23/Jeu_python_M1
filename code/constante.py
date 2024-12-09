@@ -45,16 +45,16 @@ archer_esquive = 0.3
 archer_pv = 60
 archer_attaque = 5
 archer_defense = 5
-archer_vitesse = 4
+archer_vitesse = 5
 
 chevalier_esquive = 0.1
 chevalier_pv = 100
 chevalier_attaque = 7
 chevalier_defense = 8
-chevalier_vitesse = 3
+chevalier_vitesse = 2
 
 mage_esquive = 0.2
 mage_pv = 50
 mage_attaque = 10
 mage_defense = 3
-mage_vitesse = 3
+mage_vitesse = 5

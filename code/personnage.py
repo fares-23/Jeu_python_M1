@@ -196,7 +196,7 @@ class Personnage(ABC):
             pygame.display.flip()
             pygame.time.wait(500)
         else:
-            if random.random()<0.1:
+            if random.random() <= 0.2:
                 degats = 2*degats
                 self.bandeau.afficher_message(f"{self.nom} subit un coup critique !",fenetre)
             else :
@@ -208,12 +208,12 @@ class Personnage(ABC):
     def soigner(self, soin,fenetre):
         self.pv += soin
         self.bandeau.afficher_message(f"{self.nom} récupère {soin} PV !",fenetre)
-        pygame.wait(500)
+        pygame.time.wait(500)
 
     def buff(self, buff,fenetre):
         self.defense += buff
         self.bandeau.afficher_message(f"{self.nom} gagne {buff} points de défense !",fenetre)
-        pygame.wait(500)
+        pygame.time.wait(500)
 
     @abstractmethod
     def carte_effet(self):

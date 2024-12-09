@@ -12,11 +12,11 @@ from carte import Carte
 import random
 class Main:
     pygame.init()
-   #musique
     
-    #pygame.mixer.music.load("assets/music/FE Three Houses OST - 4. The Edge of Dawn (Seasons of Warfare) (English).mp3")
-    #pygame.mixer.music.play(start=0.0, fade_ms=5000)
-    pygame.mixer.music.set_volume(0.5)
+   #musique
+    pygame.mixer.music.load("assets/music/FE Three Houses OST - 1. Three Houses Main Theme (English).mp3")
+    pygame.mixer.music.play(start=0.0, fade_ms=5000)
+    pygame.mixer.music.set_volume(0.1)
 
     def __init__(self):
         # Initialisation de la fenêtre Pygame
@@ -95,9 +95,17 @@ class Main:
             elif self.etat == "jeu":
                 self.carte.afficher(self.fenetre)  # Affiche la carte
                 self.jeu.afficher(self.fenetre, self.carte.tmx_data,self.carte,self.selection.liste_royaume)
+                self.jeu.mort()
+                if self.selection.liste_royaume != None:
+                    if self.jeu.victoire() == self.selection.liste_royaume[0]:
+                        result = self.afficher_victoire(self.selection.liste_royaume[0])
+                        if result == "end":
+                            self.reinitialiser_jeu()
+                    elif self.jeu.victoire() == self.selection.liste_royaume[1]:
+                        result = self.afficher_victoire(self.selection.liste_royaume[1])
+                        if result == "end":
+                            self.reinitialiser_jeu()
                 
-                
-
              # Mettre à jour l'affichage à chaque itération
             pygame.display.flip()
             pygame.display.update()
@@ -108,8 +116,60 @@ class Main:
             # Rétablir la forme de la souris par défaut
             pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
- 
+    def afficher_victoire(self, royaume):
+        victoire_fenetre = pygame.display.set_mode(RESOLUTION_JEU)
+        pygame.display.set_caption("Victoire")
+        fond_victoire = pygame.image.load("assets/interface/main_menu_background.jpg")
+        fond_victoire = pygame.transform.scale(fond_victoire, RESOLUTION_JEU)
+        victoire_fenetre.blit(fond_victoire, (0, 0))
+        font = pygame.font.Font(None, 50)
+        text = font.render(f"Victoire de {royaume}", True, NOIR)
+        text_rect = text.get_rect(center=(RESOLUTION_JEU[0] / 2, RESOLUTION_JEU[1] / 2))
+        victoire_fenetre.blit(text, text_rect)
+        pygame.display.flip()
+        pygame.display.update()
+        pygame.time.wait(3000)  # Attendre 3 secondes
+        return "end"
+
+    def reinitialiser_jeu(self):
+        # Initialisation de la fenêtre Pygame
+        self.fenetre = pygame.display.set_mode(RESOLUTION_JEU)
+        pygame.display.set_caption("Jeu avec Tiled")
+
+        # Initialisation de la carte
+        map = random.randint(1, 3)
+        if map == 1:
+            self.choix_map = "map1.tmx"
+            self.coord_start = co_map1
+        elif map == 2:
+            self.choix_map = "map2.tmx"
+            self.coord_start = co_map2
+        else:
+            self.choix_map = "map3.tmx"
+            self.coord_start = co_map3
+        
+        try:
+            self.carte = Carte(self.choix_map, offset_x=0, offset_y=0)
+        except Exception as e:
+            print(f"Erreur lors du chargement de la carte : {e}")
+            pygame.quit()
+            sys.exit() 
+            
+        self.carte.extraire_coordonnees_par_calque()
+        
+        # Créer une instance de Grille pour gérer les cases
+        self.grille = Grille(taille_x=120, taille_y=120, x=0, y=0)
+        
+        # Initialisation des autres composants
+        self.menu = Menu(self.fenetre)
+        self.selection = Selection(self.fenetre)
+        self.jeu = Jeu()
+        self.fond = pygame.image.load("assets/interface/main_menu_background.jpg")
+        self.fond = pygame.transform.scale(self.fond, RESOLUTION_JEU)
+        # État initial
+        self.etat = "menu"
+
+
 if __name__ == "__main__":
     start = Main()
     start.boucle_principale()
-

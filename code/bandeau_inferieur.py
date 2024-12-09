@@ -29,7 +29,7 @@ class BandeauInferieur:
         defense_text = self.font.render(f"DEF : {defense}", True, NOIR)  # Affiche la défense 
         fenetre.blit(defense_text, (90, 753))
         
-        esquive_text = self.font.render(f"ESQUIVE : {esquive}", True, NOIR)  # Affiche l'esquive
+        esquive_text = self.font.render(f"ESQUIVE : {int(esquive*100)}%", True, NOIR)  # Affiche l'esquive
         fenetre.blit(esquive_text, (200, 728))
 
         royaume_text = self.font.render(f"{royaume}", True, NOIR)  # Affiche le royaume

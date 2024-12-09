@@ -98,3 +98,25 @@ class Jeu:
                             perso_selectionne.competence(cible, fenetre)
                             return
 
+
+    def victoire(self):
+        r1 = 0
+        r2 = 0
+        if self.__liste_personnage != None and self.__liste_royaume != None:
+            for i in range(len(self.__liste_personnage)):
+                if self.__liste_personnage[i].royaume == self.__liste_royaume[0]:
+                    r1 += 1
+                elif self.__liste_personnage[i].royaume == self.__liste_royaume[1]:
+                    r2 += 1
+            if r1 == 0:
+                return self.__liste_royaume[0]
+            elif r2 == 0:
+                return self.__liste_royaume[1]
+        
+    def mort(self):
+        if self.__liste_personnage != None:
+            for i in range(len(self.__liste_personnage)):
+                if self.__liste_personnage[i].pv <= 0:
+                    self.__liste_personnage.pop(i)
+                    break
+            return self.__liste_personnage

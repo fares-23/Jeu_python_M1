@@ -104,21 +104,47 @@ class Personnage(ABC):
                     for ligne in grille.cases:
                         for case in ligne:
                             if case.collidepoint(mouse_pos) and self.selectionne:
+                                dx = (case.x - self.rect.x) // TAILLE_CASE
+                                dy = (case.y - self.rect.y) // TAILLE_CASE
+
+                                # Ignore les cases hors de portée ou déjà occupées
+                                if abs(dx) + abs(dy) > self.vitesse or (case.x, case.y) in coordonnee:
+                                    continue
+
+                                # Vérifie s'il y a un obstacle bloquant la case
                                 obstacles = (
                                     carte.recuperer_coordonnees_calque("maison")
                                     + carte.recuperer_coordonnees_calque("eau")
                                     + carte.recuperer_coordonnees_calque("rocher")
                                 )
-                                dx = (case.x - self.rect.x) // TAILLE_CASE
-                                dy = (case.y - self.rect.y) // TAILLE_CASE
+                                is_blocked = False
+                                for obstacle in obstacles:
+                                    # Bloque la progression si un obstacle se trouve sur la trajectoire
+                                    if (
+                                        # Horizontalement à droite
+                                        dx > 0
+                                        and case.y == obstacle[1]
+                                        and obstacle[0] <= case.x <= obstacle[0] + (dx - 1) * TAILLE_CASE
+                                    ) or (
+                                        # Horizontalement à gauche
+                                        dx < 0
+                                        and case.y == obstacle[1]
+                                        and obstacle[0] >= case.x >= obstacle[0] + (dx + 1) * TAILLE_CASE
+                                    ) or (
+                                        # Verticalement en bas
+                                        dy > 0
+                                        and case.x == obstacle[0]
+                                        and obstacle[1] <= case.y <= obstacle[1] + (dy - 1) * TAILLE_CASE
+                                    ) or (
+                                        # Verticalement en haut
+                                        dy < 0
+                                        and case.x == obstacle[0]
+                                        and obstacle[1] >= case.y >= obstacle[1] + (dy + 1) * TAILLE_CASE
+                                    ):
+                                        is_blocked = True
+                                        break
 
-                                if (case.x, case.y) in coordonnee or (case.x, case.y) in obstacles:
-                                    # Bloque si c'est un obstacle ou une case interdite
-                                    self.afficher_deplacement_possible = False
-                                    self.selectionne = False
-                                    return
-
-                                if abs(dx) + abs(dy) <= self.vitesse:
+                                if not is_blocked:
                                     self.rect.x = case.x
                                     self.rect.y = case.y
                                     self.afficher_deplacement_possible = False

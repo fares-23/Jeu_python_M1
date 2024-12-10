@@ -109,6 +109,8 @@ class Personnage(ABC):
 
                                 # Ignore les cases hors de portée ou déjà occupées
                                 if abs(dx) + abs(dy) > self.vitesse or (case.x, case.y) in coordonnee:
+                                    self.selectionne = not self.selectionne
+                                    self.afficher_deplacement_possible = self.selectionne
                                     continue
 
                                 # Vérifie s'il y a un obstacle bloquant la case
@@ -198,10 +200,10 @@ class Personnage(ABC):
         else:
             if random.random() <= 0.2:
                 degats = 2*degats
-                self.bandeau.afficher_message(f"{self.nom} subit un coup critique !",fenetre)
+                self.bandeau.afficher_message(f"{self.nom} subit un coup critique et reçoit {degats} dégâts !",fenetre)
             else :
-                self.pv -= max(degats, 0) # max(0, degats) pour éviter les PV négatifs
                 self.bandeau.afficher_message(f"{self.nom} reçoit {degats} dégâts !",fenetre)
+            self.pv -= max(degats, 0) # max(0, degats) pour éviter les PV négatifs
             pygame.display.flip()
             pygame.time.wait(500)
         

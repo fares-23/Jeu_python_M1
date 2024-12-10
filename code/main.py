@@ -117,19 +117,37 @@ class Main:
             pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     def afficher_victoire(self, royaume):
+        # Configuration de la fenêtre de victoire
         victoire_fenetre = pygame.display.set_mode(RESOLUTION_JEU)
         pygame.display.set_caption("Victoire")
+        
+        # Chargement du fond d'écran
         fond_victoire = pygame.image.load("assets/interface/main_menu_background.jpg")
         fond_victoire = pygame.transform.scale(fond_victoire, RESOLUTION_JEU)
         victoire_fenetre.blit(fond_victoire, (0, 0))
+        
+        # Chargement de l'image du bandeau
+        bandeau_image = pygame.image.load("assets/interface/item_frame.png")
+        bandeau_image = pygame.transform.scale(bandeau_image, (800, 100))  # Ajustez la taille du bandeau selon vos besoins
+        
+        # Position du bandeau (centré)
+        bandeau_rect = bandeau_image.get_rect(center=(RESOLUTION_JEU[0] / 2, RESOLUTION_JEU[1] / 2))
+        victoire_fenetre.blit(bandeau_image, bandeau_rect.topleft)
+        
+        # Texte de victoire
         font = pygame.font.Font(None, 50)
-        text = font.render(f"Victoire de {royaume}", True, NOIR)
+        text = font.render(f"Victoire : {royaume}", True, NOIR)
         text_rect = text.get_rect(center=(RESOLUTION_JEU[0] / 2, RESOLUTION_JEU[1] / 2))
         victoire_fenetre.blit(text, text_rect)
+        
+        # Mise à jour de l'affichage
         pygame.display.flip()
         pygame.display.update()
-        pygame.time.wait(3000)  # Attendre 3 secondes
+        
+        # Pause de 3 secondes avant de retourner
+        pygame.time.wait(5000)
         return "end"
+
 
     def reinitialiser_jeu(self):
         # Initialisation de la fenêtre Pygame

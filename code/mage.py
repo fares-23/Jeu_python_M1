@@ -16,10 +16,11 @@ class Mage(Personnage):
         self.action = True
         self.nom = "mage"
         self.bandeau = BandeauInferieur()
-        
+        self.nb_soin = 5
+        self.nb_explosion = 3
         
     def competence(self,cible,fenetre):
-        self.bandeau.afficher_message("'a' : Boule de Feu |'z' : Soin  |'e' : Explosion Magique" ,fenetre)
+        self.bandeau.afficher_message(f"'a' : Boule de Feu |'z' : Soin ({self.nb_soin}) |'e' : Explosion Magique ({self.nb_explosion})" ,fenetre)
         pygame.display.flip()
         choix = None
         self.action = False
@@ -27,18 +28,29 @@ class Mage(Personnage):
         while choix is None:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_a: # touche 1
+                    if event.key == pygame.K_a:
                         choix = 1
                         degats = self.attaque - cible.defense
                         cible.recevoir_attaque(degats,fenetre)
                     if event.key == pygame.K_z:
                         choix = 2
-                        self.soigner(20,fenetre)
+                        if self.nb_soin > 0:
+                            self.nb_soin -= 1
+                            self.soigner(20,fenetre)
+                        else:
+                            self.action = True
+                            self.bandeau.afficher_message("Vous n'avez plus de soin",fenetre)
+                            pygame.time.wait(500)
                     if event.key == pygame.K_e:
                         choix = 3
-                        degats = 3*self.attaque - cible.defense
-                        cible.recevoir_attaque(degats,fenetre)
-
+                        if self.nb_explosion > 0:
+                            self.nb_explosion -= 1
+                            degats = 3*self.attaque - cible.defense
+                            cible.recevoir_attaque(degats,fenetre)
+                        else:
+                            self.action = True
+                            self.bandeau.afficher_message("Vous n'avez plus d'explosion mage",fenetre)
+                            pygame.time.wait(500)
     def carte_effet(self):
         if (self.rect.x, self.rect.y) in self.boue:
             self.vitesse = 1

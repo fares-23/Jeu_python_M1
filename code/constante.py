@@ -42,19 +42,19 @@ mage_j_path = "assets/unites/mage_j.png"
 
 #Statistic des personnages
 archer_esquive = 0.3
-archer_pv = 10
-archer_attaque = 20
-archer_defense = 5
-archer_vitesse = 10
+archer_pv = 60
+archer_attaque = 12
+archer_defense = 7
+archer_vitesse = 4
 
 chevalier_esquive = 0.1
-chevalier_pv = 10
+chevalier_pv = 100
 chevalier_attaque = 20
-chevalier_defense = 8
-chevalier_vitesse = 10
+chevalier_defense = 10
+chevalier_vitesse = 2
 
 mage_esquive = 0.2
-mage_pv = 10
-mage_attaque = 20
-mage_defense = 3
-mage_vitesse = 10
+mage_pv = 50
+mage_attaque = 15
+mage_defense = 5
+mage_vitesse = 3

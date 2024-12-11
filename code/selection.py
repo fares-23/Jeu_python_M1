@@ -41,7 +41,7 @@ class Selection:
             if self.boutons[i].rect.collidepoint(pygame.mouse.get_pos()) or self.boutons[i].text in self.royaumes_selectionnes:
                 fenetre.blit(image, self.images_rect[i])
     
-    def gerer_evenements(self, event):
+    def gerer_evenements(self, event,coord_start):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.boutons[0].rect.collidepoint(event.pos):
                 if "Empire Adrastien" in self.royaumes_selectionnes:
@@ -70,17 +70,17 @@ class Selection:
                 
                     if self.royaumes_selectionnes[i] == "Empire Adrastien":
                         self.royaumes_selectionnes[i] = Empire_Adrastien()
-                        self.royaumes_selectionnes[i].armee(coordonnee_start[i])
+                        self.royaumes_selectionnes[i].armee(coord_start[i])
                         self.liste_troupe += self.royaumes_selectionnes[i].troupe
                         
                     elif self.royaumes_selectionnes[i] == "Saint Royaume de Faerghus":
                         self.royaumes_selectionnes[i] = Saint_Royaume_de_Faerghus()
-                        self.royaumes_selectionnes[i].armee(coordonnee_start[i])
+                        self.royaumes_selectionnes[i].armee(coord_start[i])
                         self.liste_troupe += self.royaumes_selectionnes[i].troupe
                         
                     elif self.royaumes_selectionnes[i] == "Alliance de Leicester":
                         self.royaumes_selectionnes[i] = Alliance_de_Leicester()
-                        self.royaumes_selectionnes[i].armee(coordonnee_start[i])
+                        self.royaumes_selectionnes[i].armee(coord_start[i])
                         self.liste_troupe += self.royaumes_selectionnes[i].troupe
                 return "jeu"
                     

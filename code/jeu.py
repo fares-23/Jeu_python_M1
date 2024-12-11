@@ -58,10 +58,11 @@ class Jeu:
             for i in range(len(self.__liste_personnage)):
                 self.__liste_personnage[i].action = True
         
-    @property
+    @property #getter
     def liste_personnage(self):
         return self.__liste_personnage
     
+    #setter
     @liste_personnage.setter
     def liste_personnage(self, new):
         self.__liste_personnage = new

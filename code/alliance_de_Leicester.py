@@ -15,7 +15,6 @@ class Alliance_de_Leicester(Royaume):
         self.__prob_archer = 0.6
         self.__troupe = []
         
-    
     def armee(self,liste_coordonees):
         #gernère une armée aléatoire réparti entre chevalier/mage/archer
         armee = random.choices(["chevalier", "archer", "mage"], weights=[self.__prob_chevalier, self.__prob_archer, self.__prob_mage], k=nb_troupe)

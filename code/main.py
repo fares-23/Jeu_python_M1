@@ -18,10 +18,12 @@ class Main:
         # Initialisation de la fenêtre Pygame
         self.fenetre = pygame.display.set_mode(RESOLUTION_JEU)
         pygame.display.set_caption("Fire Emblem les 3 Royaumes !")
+        """
         # Charger l'icône
         icon = pygame.image.load("assets/logo.jpeg")
         # Définir l'icône
         pygame.display.set_icon(icon)
+        """
 
         # Initialisation de la carte
         map = random.randint(1, 3)

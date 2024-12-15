@@ -6,7 +6,6 @@ from mage import Mage
 from chevalier import Chevalier
 from constante import *
 
-# La classe Empire_Adrastien représente un royaume spécifique dans le jeu. Elle hérite de la classe abstraite Royaume.
 class Empire_Adrastien(Royaume):
     
     # Le constructeur initialise le royaume "Empire Adrastien" avec des probabilités pour chaque type d'unité (mage, chevalier, archer).

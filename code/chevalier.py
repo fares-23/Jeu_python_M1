@@ -26,7 +26,7 @@ class Chevalier(Personnage):
         self.action = True  # Indique si le chevalier peut encore agir ce tour
         self.nom = "chevalier"  # Nom de l'unité
         self.bandeau = BandeauInferieur()  # Instance pour afficher les messages
-        self.nb_bouclier_divin = 5  # Nombre de boucliers divins disponibles
+        self.nb_bouclier_divin = 1  # Nombre de boucliers divins disponibles
         self.nb_coup_puissant = 3  # Nombre de coups puissants disponibles
 
     # Méthode pour gérer les compétences spécifiques du Chevalier

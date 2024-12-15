@@ -1,9 +1,7 @@
 import pygame
 
-# La classe Bouton permet de créer un bouton avec des propriétés et de l'afficher à l'écran.
 class Bouton:
     
-    # Le constructeur __init__ initialise les attributs du bouton.
     def __init__(self, text, x, y, width, height, couleur, image=None, image_survol=None):
         # Création d'un rectangle représentant les dimensions et la position du bouton sur l'écran.
         self.rect = pygame.Rect(x, y, width, height)
